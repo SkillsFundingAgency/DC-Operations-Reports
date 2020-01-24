@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ESFA.DC.Operations.Reports.Interface\ESFA.DC.Operations.Reports.Interface.csproj" />
+  </ItemGroup>
+
+</Project>
