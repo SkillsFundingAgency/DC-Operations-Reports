@@ -6,6 +6,10 @@ resources:
   fetchDepth: 15
 
 variables:
+- name: VersionNumberMajor 
+  value: '0'
+- name: VersionNumberMinor 
+  value: ''
 - name: Parameters.solution 
   value: '**\*.sln'
 - name: Parameters.nugetFeedName 
