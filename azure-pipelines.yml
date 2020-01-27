@@ -20,11 +20,8 @@ variables:
 pool:
   name: DCT
   demands:
-  - msbuild
-  - visualstudio
-  - vstest
-  - IsBuildServer
-  
+  - IsNewBuildServer
+  - ServiceFabricSDK  
 steps:
 
 - task: NuGetToolInstaller@0
