@@ -5,23 +5,18 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.Operations.Reports.Model.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ESFA.DC.Operations.Reports.Model.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ESFA.DC.CollectionsManagement.Models" Version="0.2.45-beta0001" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ESFA.DC.Operations.Reports.Model\ESFA.DC.Operations.Reports.Model.csproj" />
   </ItemGroup>
 
 </Project>

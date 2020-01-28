@@ -50,7 +50,6 @@ namespace ESFA.DC.Operations.Reports.Service
                     _logger.LogInfo($"Finishing {report.GetType().Name}");
                 }
 
-              
                 _logger.LogDebug("Completed Operations ReportService GenerateAsync");
             }
             catch (Exception ex)

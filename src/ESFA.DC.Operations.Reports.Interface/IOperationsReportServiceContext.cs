@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using ESFA.DC.CollectionsManagement.Models;
 
 namespace ESFA.DC.Operations.Reports.Interface
 {
@@ -19,5 +19,9 @@ namespace ESFA.DC.Operations.Reports.Interface
         DateTime SubmissionDateTimeUtc { get; }
 
         IEnumerable<string> Tasks { get; }
+
+        IEnumerable<ReturnPeriod> ILRPeriods { get; }
+
+        IEnumerable<ReturnPeriod> ILRPeriodsAdjustedTimes { get; }
     }
 }

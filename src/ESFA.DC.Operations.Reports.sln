@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Reports", "ESFA.DC.Operations.Reports.Reports\ESFA.DC.Operations.Reports.Reports.csproj", "{4635183B-6C5A-46AF-821D-43160EF4430C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Model", "ESFA.DC.Operations.Reports.Model\ESFA.DC.Operations.Reports.Model.csproj", "{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,14 @@ Global
 		{4635183B-6C5A-46AF-821D-43160EF4430C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4635183B-6C5A-46AF-821D-43160EF4430C}.Release|x64.ActiveCfg = Release|Any CPU
 		{4635183B-6C5A-46AF-821D-43160EF4430C}.Release|x64.Build.0 = Release|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Debug|x64.Build.0 = Debug|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|x64.ActiveCfg = Release|Any CPU
+		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

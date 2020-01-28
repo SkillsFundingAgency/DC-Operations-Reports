@@ -48,11 +48,10 @@ namespace ESFA.DC.Operations.Reports.Service
             return stringBuilder.ToString();
         }
 
-        protected virtual string GetPath(IOperationsReportServiceContext reportServiceContext) => $"R{reportServiceContext.Period:D2}/";
-
         public string GetExtension(OutputTypes outputType) => _extensionsDictionary[outputType];
 
         public string GetPrefix(IOperationsReportServiceContext reportServiceContext) => $"{Year} R{reportServiceContext.Period:D2}";
 
+        protected virtual string GetPath(IOperationsReportServiceContext reportServiceContext) => $"R{reportServiceContext.Period:D2}/";
     }
 }
