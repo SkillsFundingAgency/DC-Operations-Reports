@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.CollectionsManagement.Models;
-using ESFA.DC.ILR1920.DataStore.EF;
 using ESFA.DC.ILR1920.DataStore.EF.Interface;
 using ESFA.DC.Logging.Interfaces;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
+using ESFA.DC.Operations.Reports.Service.Providers.Abstract;
 
 namespace ESFA.DC.Operations.Reports.Service.Providers
 {
-    public class ValidationRuleDetails1920ProviderService : IValidationRuleDetailsProviderService
+    public class ValidationRuleDetails1920ProviderService : AbstractValidationRuleDetailsProviderService, IValidationRuleDetailsProviderService
     {
         private readonly Func<IIlr1920RulebaseContext> _ilrContextFactory;
 
@@ -24,7 +23,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             _ilrContextFactory = ilrContextFactory;
         }
 
-        public async Task<ICollection<ValidationRuleDetail>> ProvideAsync(string rule, IEnumerable<ReturnPeriod> returnPeriods,  CancellationToken cancellationToken)
+        public async Task<ICollection<ValidationRuleDetail>> GetValidationRuleDetails(string rule, IEnumerable<ReturnPeriod> returnPeriods,  CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -50,17 +49,6 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             }
 
             return validationRuleDetails;
-        }
-
-        public int GetPeriodReturn(DateTime? submittedDateTime, IEnumerable<ReturnPeriod> returnPeriods)
-        {
-            return !submittedDateTime.HasValue
-                ? 0
-                : returnPeriods
-                      .SingleOrDefault(x =>
-                          submittedDateTime >= x.StartDateTimeUtc &&
-                          submittedDateTime <= x.EndDateTimeUtc)
-                      ?.PeriodNumber ?? 99;
         }
     }
 }

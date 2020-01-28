@@ -50,7 +50,7 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
             var rule = reportServiceContext.Rule;
             var validationRuleDetailsProviderService = _validationRulesProviderServices[(ILRYears)reportServiceContext.Year];
 
-            var validationRuleDetails = await validationRuleDetailsProviderService.ProvideAsync(rule, ilrPeriodsAdjustedTimes, cancellationToken);
+            var validationRuleDetails = await validationRuleDetailsProviderService.GetValidationRuleDetails(rule, ilrPeriodsAdjustedTimes, cancellationToken);
             var ukprns = validationRuleDetails.Where(x => x.UkPrn != null).Select(x => (long)x.UkPrn);
 
             IEnumerable<OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
