@@ -7,13 +7,15 @@ Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "ESFA.DC.Operations.Reports"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Stateless", "ESFA.DC.Operations.Reports.Stateless\ESFA.DC.Operations.Reports.Stateless.csproj", "{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Interface", "ESFA.DC.Operations.Reports.Interface\ESFA.DC.Operations.Reports.Interface.csproj", "{238EAFDE-C15C-405A-A42F-0E0A3012260C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.Operations.Reports.Interface", "ESFA.DC.Operations.Reports.Interface\ESFA.DC.Operations.Reports.Interface.csproj", "{238EAFDE-C15C-405A-A42F-0E0A3012260C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Service", "ESFA.DC.Operations.Reports.Service\ESFA.DC.Operations.Reports.Service.csproj", "{44552626-ABC3-4978-BBFD-0B4F6B50E1F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.Operations.Reports.Service", "ESFA.DC.Operations.Reports.Service\ESFA.DC.Operations.Reports.Service.csproj", "{44552626-ABC3-4978-BBFD-0B4F6B50E1F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Reports", "ESFA.DC.Operations.Reports.Reports\ESFA.DC.Operations.Reports.Reports.csproj", "{4635183B-6C5A-46AF-821D-43160EF4430C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.Operations.Reports.Reports", "ESFA.DC.Operations.Reports.Reports\ESFA.DC.Operations.Reports.Reports.csproj", "{4635183B-6C5A-46AF-821D-43160EF4430C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Model", "ESFA.DC.Operations.Reports.Model\ESFA.DC.Operations.Reports.Model.csproj", "{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.Operations.Reports.Model", "ESFA.DC.Operations.Reports.Model\ESFA.DC.Operations.Reports.Model.csproj", "{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Tests", "ESFA.DC.Operations.Reports.Tests\ESFA.DC.Operations.Reports.Tests.csproj", "{540398C0-B59B-4816-8685-8907E42B7D4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,14 @@ Global
 		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|x64.ActiveCfg = Release|Any CPU
 		{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}.Release|x64.Build.0 = Release|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Debug|x64.Build.0 = Debug|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Release|x64.ActiveCfg = Release|Any CPU
+		{540398C0-B59B-4816-8685-8907E42B7D4D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
