@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using ESFA.DC.FileService.Config;
+using ESFA.DC.ILR1819.DataStore.EF;
+using ESFA.DC.ILR1819.DataStore.EF.Interface;
 using ESFA.DC.ILR1920.DataStore.EF;
 using ESFA.DC.ILR1920.DataStore.EF.Interface;
 using ESFA.DC.Operations.Reports.Stateless.Config;
@@ -31,7 +33,21 @@ namespace ESFA.DC.Operations.Reports.Stateless
             var azureStorageFileServiceConfiguration = serviceFabricConfigurationService.GetConfigSectionAs<AzureStorageFileServiceConfiguration>("AzureStorageFileServiceConfiguration");
 
             containerBuilder.RegisterType<ILR1920_DataStoreEntities>().As<IIlr1920RulebaseContext>();
+            containerBuilder.RegisterType<ILR1819_DataStoreEntities>().As<IIlr1819RulebaseContext>();
             containerBuilder.RegisterType<PimsContext>().As<IPimsContext>();
+
+            containerBuilder.Register(context =>
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<ILR1819_DataStoreEntities>();
+                    optionsBuilder.UseSqlServer(
+                        reportServiceConfiguration.IlrDataStore1819ConnectionString,
+                        options => options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), new List<int>()));
+
+                    return optionsBuilder.Options;
+                })
+                .As<DbContextOptions<ILR1819_DataStoreEntities>>()
+                .SingleInstance();
+
             containerBuilder.Register(context =>
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<ILR1920_DataStoreEntities>();

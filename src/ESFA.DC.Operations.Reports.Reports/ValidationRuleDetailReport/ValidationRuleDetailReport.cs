@@ -3,61 +3,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac.Features.Indexed;
 using ESFA.DC.CollectionsManagement.Models;
+using ESFA.DC.CsvService.Interface;
 using ESFA.DC.FileService.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
+using ESFA.DC.Operations.Reports.Reports.Abstract;
 using ESFA.DC.Operations.Reports.Reports.Constants;
 using ESFA.DC.Serialization.Interfaces;
 
 namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 {
-    public class ValidationRuleDetailReport : IReport
+    public class ValidationRuleDetailReport : AbstractReport, IReport
     {
-        private readonly IValidationRuleDetailsProviderService _providerService;
+        private readonly IIndex<ILRYears, IValidationRuleDetailsProviderService> _validationRulesProviderServices;
         private readonly IOrgProviderService _orgProviderService;
         private readonly IFileService _fileService;
         private readonly IJsonSerializationService _serializationService;
-        private readonly string _fileName = "\\ValidationRuleDetails.json";
-        
+        private readonly ICsvFileService _csvFileService;
+        private readonly IFileNameService _fileNameService;
+
         public ValidationRuleDetailReport(
-            IValidationRuleDetailsProviderService providerService,
+            IIndex<ILRYears, IValidationRuleDetailsProviderService> validationRulesProviderServices,
             IOrgProviderService orgProviderService,
             IFileService fileService,
-            IJsonSerializationService serializationService)
+            IJsonSerializationService serializationService,
+            ICsvFileService csvFileService,
+            IFileNameService fileNameService)
+            : base(ReportTaskNameConstants.ValidationRuleDetailReport, "Validation Rule Details")
         {
-            _providerService = providerService;
+            _validationRulesProviderServices = validationRulesProviderServices;
             _orgProviderService = orgProviderService;
             _fileService = fileService;
             _serializationService = serializationService;
+            _csvFileService = csvFileService;
+            _fileNameService = fileNameService;
         }
-
-        public string TaskName => ReportTaskNameConstants.ValidationRuleDetailReport;
 
         public async Task<IEnumerable<string>> GenerateAsync(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
         {
             //var ilrPeriodsAdjustedTimes = reportServiceContext.ILRPeriodsAdjustedTimes;
 
             var ilrPeriodsAdjustedTimes = BuildReturnPeriodsModel();
-
             var rule = reportServiceContext.Rule;
+            var validationRuleDetailsProviderService = _validationRulesProviderServices[(ILRYears)reportServiceContext.Year];
 
-            var validationRuleDetails = await _providerService.ProvideAsync(rule, ilrPeriodsAdjustedTimes, cancellationToken);
-
-            var ukprns = validationRuleDetails.Where(x=> x.UkPrn != null).Select(x => (long)x.UkPrn);
+            var validationRuleDetails = await validationRuleDetailsProviderService.ProvideAsync(rule, ilrPeriodsAdjustedTimes, cancellationToken);
+            var ukprns = validationRuleDetails.Where(x => x.UkPrn != null).Select(x => (long)x.UkPrn);
 
             IEnumerable<OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
             PopulateModelsWithOrgDetails(validationRuleDetails, orgDetails);
 
-            var summaryFilename = $"{reportServiceContext.JobId}{_fileName}";
+            var fileNameCsv = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Csv, true, false);
+            var fileNameJson = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Json,true, false);
 
-            using (var stream = await _fileService.OpenWriteStreamAsync(summaryFilename, reportServiceContext.Container, cancellationToken))
+            using (var stream = await _fileService.OpenWriteStreamAsync(fileNameJson, reportServiceContext.Container, cancellationToken))
             {
                 _serializationService.Serialize(validationRuleDetails, stream);
             }
 
-            return new[] { "success" };
+            await _csvFileService.WriteAsync<ValidationRuleDetail, ValidationRuleDetailReportClassMap>(validationRuleDetails, fileNameCsv, reportServiceContext.Container, cancellationToken);
+            return new[] { fileNameCsv };
         }
 
         public static void PopulateModelsWithOrgDetails(IEnumerable<ValidationRuleDetail> validationRuleDetails, IEnumerable<OrgModel> orgDetails)

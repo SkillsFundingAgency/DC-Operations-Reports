@@ -2,6 +2,6 @@
 {
     public interface IFileNameService
     {
-        string Generate(IOperationsReportServiceContext mcaGlaReportServiceContext, string reportName, OutputTypes outputType, bool includeDateTime = true, bool includeYearAndPeriod = true);
+        string Generate(IOperationsReportServiceContext operationsReportServiceContext, string reportName, OutputTypes outputType, bool includeDateTime = true, bool includeYearAndPeriod = true);
     }
 }

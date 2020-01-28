@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.CollectionsManagement.Models;
+using ESFA.DC.ILR1819.DataStore.EF.Interface;
 using ESFA.DC.ILR1920.DataStore.EF;
 using ESFA.DC.ILR1920.DataStore.EF.Interface;
 using ESFA.DC.Logging.Interfaces;
@@ -13,13 +14,13 @@ using ESFA.DC.Operations.Reports.Model;
 
 namespace ESFA.DC.Operations.Reports.Service.Providers
 {
-    public class ValidationRuleDetails1920ProviderService : IValidationRuleDetailsProviderService
+    public class ValidationRuleDetails1819ProviderService : IValidationRuleDetailsProviderService
     {
-        private readonly Func<IIlr1920RulebaseContext> _ilrContextFactory;
+        private readonly Func<IIlr1819RulebaseContext> _ilrContextFactory;
 
-        public ValidationRuleDetails1920ProviderService(
+        public ValidationRuleDetails1819ProviderService(
             ILogger logger,
-            Func<IIlr1920RulebaseContext> ilrContextFactory)
+            Func<IIlr1819RulebaseContext> ilrContextFactory)
         {
             _ilrContextFactory = ilrContextFactory;
         }

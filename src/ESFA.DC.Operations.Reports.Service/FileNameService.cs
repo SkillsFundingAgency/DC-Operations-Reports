@@ -52,6 +52,6 @@ namespace ESFA.DC.Operations.Reports.Service
 
         public string GetPrefix(IOperationsReportServiceContext reportServiceContext) => $"{Year} R{reportServiceContext.Period:D2}";
 
-        protected virtual string GetPath(IOperationsReportServiceContext reportServiceContext) => $"R{reportServiceContext.Period:D2}/";
+        protected virtual string GetPath(IOperationsReportServiceContext reportServiceContext) => $"{reportServiceContext.JobId}/";
     }
 }

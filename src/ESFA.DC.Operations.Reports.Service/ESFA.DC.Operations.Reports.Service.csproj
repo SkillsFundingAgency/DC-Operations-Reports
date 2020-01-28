@@ -13,9 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.2" />
     <PackageReference Include="ESFA.DC.CollectionsManagement.Models" Version="0.2.45-beta0001" />
     <PackageReference Include="ESFA.DC.DateTimeProvider" Version="0.1.6-beta0001" />
     <PackageReference Include="ESFA.DC.FileService" Version="0.1.28-beta0001" />
+    <PackageReference Include="ESFA.DC.ILR1819.Database.EF" Version="0.1.381" />
     <PackageReference Include="ESFA.DC.ILR1920.Database.EF" Version="0.0.551" />
     <PackageReference Include="ESFA.DC.Logging" Version="0.1.4-beta0001" />
     <PackageReference Include="ESFA.DC.Logging.Interfaces" Version="0.1.4-beta0001" />
