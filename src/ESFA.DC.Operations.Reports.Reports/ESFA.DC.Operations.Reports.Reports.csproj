@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ESFA.DC.FileService" Version="0.1.28-beta0001" />
     <PackageReference Include="ESFA.DC.ILR1920.Database.EF" Version="0.0.551" />
+    <PackageReference Include="ESFA.DC.Serialization.Json" Version="0.1.6-beta0001" />
     <PackageReference Include="Microsoft.ServiceFabric" Version="6.5.676" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

@@ -9,8 +9,11 @@ using ESFA.DC.ILR1920.DataStore.EF;
 using ESFA.DC.ILR1920.DataStore.EF.Interface;
 using ESFA.DC.Operations.Reports.Stateless.Config;
 using ESFA.DC.Operations.Reports.Stateless.Modules;
+using ESFA.DC.PIMS.EF;
+using ESFA.DC.PIMS.EF.Interfaces;
 using ESFA.DC.ServiceFabric.Common.Config;
 using ESFA.DC.ServiceFabric.Common.Config.Interface;
+using ESFA.DC.ServiceFabric.Common.Modules;
 using Microsoft.EntityFrameworkCore;
 
 namespace ESFA.DC.Operations.Reports.Stateless
@@ -28,6 +31,7 @@ namespace ESFA.DC.Operations.Reports.Stateless
             var azureStorageFileServiceConfiguration = serviceFabricConfigurationService.GetConfigSectionAs<AzureStorageFileServiceConfiguration>("AzureStorageFileServiceConfiguration");
 
             containerBuilder.RegisterType<ILR1920_DataStoreEntities>().As<IIlr1920RulebaseContext>();
+            containerBuilder.RegisterType<PimsContext>().As<IPimsContext>();
             containerBuilder.Register(context =>
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<ILR1920_DataStoreEntities>();
@@ -40,7 +44,20 @@ namespace ESFA.DC.Operations.Reports.Stateless
                 .As<DbContextOptions<ILR1920_DataStoreEntities>>()
                 .SingleInstance();
 
+            containerBuilder.Register(context =>
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<PimsContext>();
+                    optionsBuilder.UseSqlServer(
+                        reportServiceConfiguration.PimsDataConnectionString,
+                        options => options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), new List<int>()));
+
+                    return optionsBuilder.Options;
+                })
+                .As<DbContextOptions<PimsContext>>()
+                .SingleInstance();
+
             containerBuilder.RegisterModule(new StatelessBaseModule(statelessServiceConfiguration));
+            containerBuilder.RegisterModule<SerializationModule>();
             containerBuilder.RegisterModule(new IOModule(azureStorageFileServiceConfiguration));
             containerBuilder.RegisterModule<ReportsServiceModule>();
             containerBuilder.RegisterModule<ReportsModule>();

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using ESFA.DC.JobContextManager.Interface;
@@ -46,7 +43,7 @@ namespace ESFA.DC.Operations.Reports.Stateless
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError("Reference Data Message Handler Exception", exception);
+                    _logger.LogError("Operations Reports Message Handler Exception", exception);
                     throw;
                 }
 

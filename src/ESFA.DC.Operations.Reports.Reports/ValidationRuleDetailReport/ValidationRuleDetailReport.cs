@@ -1,21 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.CollectionsManagement.Models;
+using ESFA.DC.FileService.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
+using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Reports.Constants;
+using ESFA.DC.Serialization.Interfaces;
 
 namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 {
     public class ValidationRuleDetailReport : IReport
     {
         private readonly IValidationRuleDetailsProviderService _providerService;
-
-        public ValidationRuleDetailReport(IValidationRuleDetailsProviderService providerService)
+        private readonly IOrgProviderService _orgProviderService;
+        private readonly IFileService _fileService;
+        private readonly IJsonSerializationService _serializationService;
+        private readonly string _fileName = "\\ValidationRuleDetails.json";
+        
+        public ValidationRuleDetailReport(
+            IValidationRuleDetailsProviderService providerService,
+            IOrgProviderService orgProviderService,
+            IFileService fileService,
+            IJsonSerializationService serializationService)
         {
             _providerService = providerService;
+            _orgProviderService = orgProviderService;
+            _fileService = fileService;
+            _serializationService = serializationService;
         }
 
         public string TaskName => ReportTaskNameConstants.ValidationRuleDetailReport;
@@ -28,8 +43,29 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 
             var rule = reportServiceContext.Rule;
 
-            var validationRuleDetails = _providerService.ProvideAsync(rule, ilrPeriodsAdjustedTimes, cancellationToken);
+            var validationRuleDetails = await _providerService.ProvideAsync(rule, ilrPeriodsAdjustedTimes, cancellationToken);
+
+            var ukprns = validationRuleDetails.Where(x=> x.UkPrn != null).Select(x => (long)x.UkPrn);
+
+            IEnumerable<OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
+            PopulateModelsWithOrgDetails(validationRuleDetails, orgDetails);
+
+            var summaryFilename = $"{reportServiceContext.JobId}{_fileName}";
+
+            using (var stream = await _fileService.OpenWriteStreamAsync(summaryFilename, reportServiceContext.Container, cancellationToken))
+            {
+                _serializationService.Serialize(validationRuleDetails, stream);
+            }
+
             return new[] { "success" };
+        }
+
+        public static void PopulateModelsWithOrgDetails(IEnumerable<ValidationRuleDetail> validationRuleDetails, IEnumerable<OrgModel> orgDetails)
+        {
+            foreach (var validationRuleDetail in validationRuleDetails)
+            {
+                validationRuleDetail.ProviderName = orgDetails.FirstOrDefault(p => p.Ukprn == validationRuleDetail.UkPrn).Name;
+            }
         }
 
         private List<ReturnPeriod> BuildReturnPeriodsModel()

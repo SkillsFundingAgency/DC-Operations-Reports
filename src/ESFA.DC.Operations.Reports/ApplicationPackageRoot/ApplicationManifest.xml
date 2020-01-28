@@ -17,6 +17,7 @@
     <Parameter Name="LoggerConnectionString" DefaultValue="" />
     <Parameter Name="IlrDataStore1819ConnectionString" DefaultValue="" />
     <Parameter Name="IlrDataStore1920ConnectionString" DefaultValue="" />
+    <Parameter Name="PimsDataConnectionString" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -41,6 +42,7 @@
           <Section Name="ReportServiceConfiguration">
             <Parameter Name="IlrDataStore1819ConnectionString" Value="[IlrDataStore1819ConnectionString]" />
             <Parameter Name="IlrDataStore1920ConnectionString" Value="[IlrDataStore1920ConnectionString]" />
+            <Parameter Name="PimsDataConnectionString" Value="[PimsDataConnectionString]" />
           </Section>
           <Section Name="AzureStorageFileServiceConfiguration">
             <Parameter Name="ConnectionString" Value="[AzureStorageConnectionString]" />

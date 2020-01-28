@@ -15,6 +15,7 @@
   <Section Name="ReportServiceConfiguration">
     <Parameter Name="IlrDataStore1819ConnectionString" Value="" />
     <Parameter Name="IlrDataStore1920ConnectionString" Value="" />
+    <Parameter Name="PimsDataConnectionString" Value="" />
   </Section>
   <Section Name="AzureStorageFileServiceConfiguration">
     <Parameter Name="ConnectionString" Value="" />
