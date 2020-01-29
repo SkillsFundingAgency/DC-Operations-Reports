@@ -30,9 +30,9 @@ stages:
     pool:
       name: DCT
       demands:
-      - IsBuildServer
-      #- ServiceFabricSDK  
-
+      - ServiceFabricSDK  
+      #- IsNewBuildServer
+      
     steps:
     - task: DotNetCoreInstaller@2
       inputs:
