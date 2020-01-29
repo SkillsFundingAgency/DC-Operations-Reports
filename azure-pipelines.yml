@@ -34,30 +34,21 @@ stages:
       #- ServiceFabricSDK  
 
     steps:
-    - task: NuGetToolInstaller@0
-      displayName: 'Use NuGet >=5.3.1'
-      enabled: false
-      inputs:
-        versionSpec: '>=5.3.1'
-
-    - task: NuGetToolInstaller@0
-      displayName: 'Use NuGet 4.7.1'
-      inputs:
-        versionSpec: 4.7.1
-
     - task: DotNetCoreInstaller@2
       inputs:
         version: 2.2.110
       displayName: 'Use .NET Core sdk 2.2.8 (VS2019 = 2.2.207) | (VS2017 = 2.2.110)'
 
-    # Generate the report using ReportGenerator (https://github.com/danielpalme/ReportGenerator)
-    # First install the tool on the machine, then run it
-    - script: |
-            dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.3.6
-      displayName: Install dotnet-reportgenerator-globaltool
-      continueOnError: true  
-      enabled: false
+    #- task: NuGetToolInstaller@0
+    #  displayName: 'Use NuGet >=5.3.1'
+    #  enabled: false
+    #  inputs:
+    #    versionSpec: '>=5.3.1'
 
+    - task: NuGetToolInstaller@0
+      displayName: 'Use NuGet 4.7.1'
+      inputs:
+        versionSpec: 4.7.1
 
     - task: NuGetCommand@2
       displayName: 'NuGet restore'
