@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ESFA.DC.CollectionsManagement.Models;
 using ESFA.DC.ILR.Constants;
 using ESFA.DC.JobContextManager.Model;
@@ -25,12 +23,12 @@ namespace ESFA.DC.Operations.Reports.Stateless.Context
         public int Period => int.Parse(_jobContextMessage.KeyValuePairs[ILRContextKeys.ReturnPeriod].ToString());
 
         public string Container => _jobContextMessage.KeyValuePairs[ILRContextKeys.Container].ToString();
-
+        
         public DateTime SubmissionDateTimeUtc => _jobContextMessage.SubmissionDateTimeUtc;
 
         public string Rule => _jobContextMessage.KeyValuePairs[MessageKeys.Rule].ToString();
 
-        public int Year => int.Parse(_jobContextMessage.KeyValuePairs[MessageKeys.Year].ToString());
+        public int CollectionYear => int.Parse(_jobContextMessage.KeyValuePairs[ILRContextKeys.CollectionYear].ToString());
 
         public IEnumerable<string> Tasks => _jobContextMessage.Topics[_jobContextMessage.TopicPointer].Tasks.SelectMany(x => x.Tasks);
 

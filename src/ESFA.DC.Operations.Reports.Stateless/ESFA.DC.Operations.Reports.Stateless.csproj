@@ -445,6 +445,10 @@
       <Project>{238eafde-c15c-405a-a42f-0e0a3012260c}</Project>
       <Name>ESFA.DC.Operations.Reports.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.Operations.Reports.Model\ESFA.DC.Operations.Reports.Model.csproj">
+      <Project>{CAC771D7-5FE9-40A3-8ED2-2531B209AF62}</Project>
+      <Name>ESFA.DC.Operations.Reports.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ESFA.DC.Operations.Reports.Reports\ESFA.DC.Operations.Reports.Reports.csproj">
       <Project>{4635183b-6c5a-46af-821d-43160ef4430c}</Project>
       <Name>ESFA.DC.Operations.Reports.Reports</Name>

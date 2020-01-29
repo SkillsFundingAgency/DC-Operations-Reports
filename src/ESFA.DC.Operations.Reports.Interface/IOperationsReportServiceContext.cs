@@ -14,7 +14,7 @@ namespace ESFA.DC.Operations.Reports.Interface
 
         string Rule { get; }
 
-        int Year { get; }
+        int CollectionYear { get; }
 
         DateTime SubmissionDateTimeUtc { get; }
 
