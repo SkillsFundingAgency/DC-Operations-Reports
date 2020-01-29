@@ -30,8 +30,8 @@ stages:
     pool:
       name: DCT
       demands:
-      - IsNewBuildServer
-      - ServiceFabricSDK  
+      - IsBuildServer
+      #- ServiceFabricSDK  
 
     steps:
     - task: NuGetToolInstaller@0
