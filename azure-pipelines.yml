@@ -1,0 +1,238 @@
+
+name: $(VersionNumberMajor).$(VersionNumberMinor)$(Rev:.rrrr)
+
+resources:
+- repo: self
+  fetchDepth: 15
+
+variables:
+- name: VersionNumberMajor 
+  value: '0'
+- name: VersionNumberMinor 
+  value: '0'
+- name: Parameters.solution 
+  value: '**\*.sln'
+- name: Parameters.nugetFeedName 
+  value: 'dct-pkg'
+- name: BuildConfiguration
+  value: 'Release'
+- name: BuildPlatform
+  value: 'Any CPU'
+- name: ServiceFabricProjectFolderName
+  value: 'ESFA.DC.Operations.Reports'
+  
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      name: DCT
+      demands:
+      - ServiceFabricSDK  
+      #- IsNewBuildServer
+      
+    steps:
+    - task: DotNetCoreInstaller@2
+      inputs:
+        version: 2.2.110
+      displayName: 'Use .NET Core sdk 2.2.8 (VS2019 = 2.2.207) | (VS2017 = 2.2.110)'
+
+    #- task: NuGetToolInstaller@0
+    #  displayName: 'Use NuGet >=5.3.1'
+    #  enabled: false
+    #  inputs:
+    #    versionSpec: '>=5.3.1'
+
+    - task: NuGetToolInstaller@0
+      displayName: 'Use NuGet 4.7.1'
+      inputs:
+        versionSpec: 4.7.1
+
+    - task: NuGetCommand@2
+      displayName: 'NuGet restore'
+      enabled: true
+      inputs:
+        restoreSolution: '$(Parameters.solution)'
+        vstsFeed: '$(Parameters.nugetFeedName)'
+
+    - task: MSBuild@1
+      displayName: 'Build solution'
+      enabled: true
+      inputs:
+        msbuildVersion: 15.0
+        solution: '**/*.sln'
+        msbuildArchitecture: x64
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+        msbuildArguments: '-p:version=$(Build.BuildNumber) -p:FileVersion=$(Build.BuildNumber) -p:SkipInvalidConfigurations=true'
+        clean: true
+        maximumCpuCount: true
+        logProjectEvents: true
+        createLogFile: true
+
+    - task: MSBuild@1
+      displayName: 'Build SF Project'
+      enabled: true
+      inputs:
+        msbuildVersion: 15.0
+        solution: '**/$(ServiceFabricProjectFolderName)/*.sfproj'
+        msbuildArchitecture: x64
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+        msbuildArguments: '/t:Package /p:PackageLocation=$(build.artifactstagingdirectory)\ServiceFabric\ApplicationPackage  /p:version=$(Build.BuildNumber) /p:FileVersion=$(Build.BuildNumber) -p:SkipInvalidConfigurations=true'
+        clean: false
+        maximumCpuCount: true
+        logProjectEvents: true
+        createLogFile: true
+   
+    - task: DeleteFiles@1
+      displayName: 'Delete Symbols files from $(build.artifactstagingdirectory)\ServiceFabric\ApplicationPackage '
+      inputs:
+        SourceFolder: '$(build.artifactstagingdirectory)\ServiceFabric\ApplicationPackage'
+        Contents: '**\*.pdb'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Nuget Interface Packages Files - Artifact NugetInterface Directory'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)\src'
+        Contents: |
+         **\*$(BuildConfiguration)*\*Interface.nupkg
+         !**\packages\**
+         !**\bin\x64\**
+        TargetFolder: '$(build.artifactstagingdirectory)\Nuget\Interface'
+        CleanTargetFolder: true
+        flattenFolders: true
+
+    - task: CopyFiles@2
+      displayName: 'Copy NugetPackages Files - Artifact NugetPackages Directory'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)\src'
+        Contents: |
+         **\*$(BuildConfiguration)*\*.nupkg
+         !**\packages\**
+         !**\bin\x64\**
+        TargetFolder: '$(build.artifactstagingdirectory)\Nuget\Packages'
+        CleanTargetFolder: true
+        flattenFolders: true
+        
+    - task: CopyFiles@2
+      displayName: 'Copy Database Files - Artifact Databases Directory'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)'
+        Contents: |
+         **\*.Database\**\*.dacpac
+        TargetFolder: '$(build.artifactstagingdirectory)\Databases'
+        CleanTargetFolder: true
+        flattenFolders: true
+    
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files - $(build.artifactstagingdirectory)\ServiceFabric\PublishProfiles'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)\src'
+        Contents: '**\PublishProfiles\Cloud.xml'
+        TargetFolder: '$(build.artifactstagingdirectory)\ServiceFabric\PublishProfiles'
+        CleanTargetFolder: true
+        flattenFolders: true
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files - $(build.artifactstagingdirectory)\ServiceFabric\ApplicationParameters'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)\src'
+        Contents: '**\ApplicationParameters\*.xml'
+        TargetFolder: '$(build.artifactstagingdirectory)\ServiceFabric\ApplicationParameters'
+        CleanTargetFolder: true
+        flattenFolders: true
+
+    - task: ServiceFabricUpdateManifests@2
+      displayName: 'Update Service Fabric Manifests (Manifest versions)'
+      enabled: true
+      inputs:
+        applicationPackagePath: '$(build.artifactstagingdirectory)\ServiceFabric\ApplicationPackage '
+        versionBehavior: Replace
+   
+    - task: DotNetCoreCLI@2
+      displayName: Run unit tests
+      enabled: false
+      inputs:
+        command: test
+        arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+        nobuild: true
+        projects: '**/*Tests.csproj'
+    
+    - task: VSTest@2
+      displayName: 'Run Unit Tests'
+      enabled: false
+      inputs:
+        testAssemblyVer2: |
+         **\*tests.dll
+         !**\*Database.Tests*\**
+         !**\*TestAdapter.dll
+         !**\*SmokeTests.dll
+         !**\*AcceptanceTests.dll
+         !**\packages\**
+         !**\obj\**
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+        runInParallel: true
+        codeCoverageEnabled: true
+        diagnosticsEnabled: true
+
+
+    #********************************************************************************
+    # Generate Code Coverage Report and Publish
+    #********************************************************************************
+ 
+    ### Generate the report using ReportGenerator (https://github.com/danielpalme/ReportGenerator)
+    ## First install the tool on the machine, then run it
+    #- script: |
+    #    dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.3.6  
+    #    reportgenerator -reports:$(Build.SourcesDirectory)/**/*Tests/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:Cobertura
+    #  displayName: Create Code coverage report
+    #  
+
+    # Publish the code coverage result (summary and web site)
+    # The summary allows to view the coverage percentage in the summary tab
+    # The web site allows to view which lines are covered directly in Azure Pipeline
+    - task: PublishCodeCoverageResults@1
+      enabled: false
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
+        reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+     
+    #********************************************************************************
+    # Publish Artifacts
+    #********************************************************************************
+
+    - task: PublishSymbols@2
+      displayName: 'Publish symbols path'
+      enabled: false
+      inputs:
+        SearchPattern: '**\bin\**\*.pdb'
+        PublishSymbols: false
+      continueOnError: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: ServiceFabric'
+      enabled: true
+      inputs:
+        ArtifactName: ServiceFabric
+        PathtoPublish: '$(build.artifactstagingdirectory)\ServiceFabric'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: NugetPackages'
+      enabled: false
+      inputs:
+        ArtifactName: NugetPackages
+        PathtoPublish: '$(build.artifactstagingdirectory)\Nuget'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: Databases'
+      enabled: false
+      inputs:
+        ArtifactName: Databases
+        PathtoPublish: '$(build.artifactstagingdirectory)\Databases'
