@@ -17,6 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.Operations.Reports.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Operations.Reports.Tests", "ESFA.DC.Operations.Reports.Tests\ESFA.DC.Operations.Reports.Tests.csproj", "{540398C0-B59B-4816-8685-8907E42B7D4D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2AD83B61-700A-46DF-8ACF-6CD249981B18}"
+	ProjectSection(SolutionItems) = preProject
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,17 +32,23 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{D2143282-3961-4880-9C9D-375465AFC1A4}.Debug|Any CPU.Build.0 = Debug|x64
+		{D2143282-3961-4880-9C9D-375465AFC1A4}.Debug|Any CPU.Deploy.0 = Debug|x64
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Debug|x64.ActiveCfg = Debug|x64
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Debug|x64.Build.0 = Debug|x64
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Debug|x64.Deploy.0 = Debug|x64
-		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|Any CPU.ActiveCfg = Release|x64
+		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|x64.ActiveCfg = Release|x64
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|x64.Build.0 = Release|x64
 		{D2143282-3961-4880-9C9D-375465AFC1A4}.Release|x64.Deploy.0 = Release|x64
 		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Debug|Any CPU.Build.0 = Debug|x64
 		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Debug|x64.ActiveCfg = Debug|x64
 		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Debug|x64.Build.0 = Debug|x64
-		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Release|Any CPU.ActiveCfg = Release|x64
+		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Release|x64.ActiveCfg = Release|x64
 		{9DE4944E-AAE4-42CE-B684-4C102C43A0C5}.Release|x64.Build.0 = Release|x64
 		{238EAFDE-C15C-405A-A42F-0E0A3012260C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
