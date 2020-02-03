@@ -42,7 +42,7 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
         {
             foreach (var validationRuleDetail in validationRuleDetails)
             {
-                validationRuleDetail.ProviderName = orgDetails.FirstOrDefault(p => p.Ukprn == validationRuleDetail.UkPrn).Name;
+                validationRuleDetail.ProviderName = orgDetails.SingleOrDefault(p => p.Ukprn == validationRuleDetail.UkPrn)?.Name;
             }
         }
     }
