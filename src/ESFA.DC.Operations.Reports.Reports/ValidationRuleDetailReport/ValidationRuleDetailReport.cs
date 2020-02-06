@@ -42,8 +42,8 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
         public async Task<IEnumerable<string>> GenerateAsync(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
         {
             var validationRuleDetails = await _modelBuilder.Build(reportServiceContext, cancellationToken);
-            var fileNameCsv = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Csv, true, false);
-            var fileNameJson = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Json,true, false);
+            var fileNameCsv = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Csv, false, false);
+            var fileNameJson = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Json,false, false);
 
             var validationRuleDetailsList = validationRuleDetails.ToList();
             using (var stream = await _fileService.OpenWriteStreamAsync(fileNameJson, reportServiceContext.Container, cancellationToken))

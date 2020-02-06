@@ -8,8 +8,8 @@ namespace ESFA.DC.Operations.Reports.Reports.Constants
     {
         public const string Rule = "Rule";
 
-        public const string SelectedCollectionYear = "ReportSelectedCollectionYear";
+        public const string SelectedCollectionYear = "SelectedCollectionYear";
 
-        public const string SelectedILRPeriods = "ReportSelectedILRPeriods";
+        public const string SelectedILRPeriods = "SelectedILRPeriods";
     }
 }

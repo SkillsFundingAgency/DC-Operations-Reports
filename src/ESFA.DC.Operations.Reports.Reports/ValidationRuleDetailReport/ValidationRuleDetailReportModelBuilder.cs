@@ -7,6 +7,7 @@ using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Reports.Constants;
+using ESFA.DC.Operations.Reports.Reports.Extensions;
 
 namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 {
@@ -32,17 +33,17 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
             var validationRuleDetails = await validationRuleDetailsProviderService.GetValidationRuleDetails(rule, ilrPeriodsAdjustedTimes, cancellationToken);
             var ukprns = validationRuleDetails.Where(x => x.UkPrn != null).Select(x => (long)x.UkPrn);
 
-            IEnumerable<OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
+            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
             PopulateModelsWithOrgDetails(validationRuleDetails, orgDetails);
 
             return validationRuleDetails;
         }
 
-        public static void PopulateModelsWithOrgDetails(IEnumerable<ValidationRuleDetail> validationRuleDetails, IEnumerable<OrgModel> orgDetails)
+        public static void PopulateModelsWithOrgDetails(IEnumerable<ValidationRuleDetail> validationRuleDetails, IDictionary<int, OrgModel> orgDetails)
         {
             foreach (var validationRuleDetail in validationRuleDetails)
             {
-                validationRuleDetail.ProviderName = orgDetails.SingleOrDefault(p => p.Ukprn == validationRuleDetail.UkPrn)?.Name;
+                validationRuleDetail.ProviderName = orgDetails.GetValueOrDefault(validationRuleDetail.UkPrn.GetValueOrDefault())?.Name;
             }
         }
     }

@@ -19,13 +19,13 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             _orgContextFactory = orgContextFactory;
         }
 
-        public async Task<IEnumerable<OrgModel>> GetOrgDetailsForUKPRNsAsync(List<long> uKPRNs, CancellationToken cancellationToken)
+        public async Task<IDictionary<int, OrgModel>> GetOrgDetailsForUKPRNsAsync(List<long> uKPRNs, CancellationToken cancellationToken)
         {
             List<OrgModel> orgModels = new List<OrgModel>();
 
             if ((uKPRNs?.Count ?? 0) == 0)
             {
-                return orgModels;
+                return new Dictionary<int, OrgModel>();
             }
 
             int count = uKPRNs.Count;
@@ -44,7 +44,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                 }
             }
 
-            return orgModels;
+            return orgModels.ToDictionary(k => (int) k.Ukprn, v => v);
         }
     }
 }

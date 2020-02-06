@@ -75,21 +75,14 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ValidationRuleDetailReport
             };
         }
 
-        private List<OrgModel> BuildOrgModel()
+        private IDictionary<int, OrgModel> BuildOrgModel()
         {
-            return new List<OrgModel>
+          return new Dictionary<int, OrgModel>()
             {
-                new OrgModel
-                {
-                    Ukprn = 123456789,
-                    Name = "Provider 1",
-                },
-                new OrgModel
-                {
-                    Ukprn = 987654321,
-                    Name = "Provider 2",
-                }
+                { 123456789, new OrgModel {  Ukprn = 123456789, Name = "Provider 1" } },
+                { 987654321, new OrgModel {  Ukprn = 987654321, Name = "Provider 2" } },
             };
+
         }
 
         private List<ReturnPeriod> BuildReturnPeriodsModel()

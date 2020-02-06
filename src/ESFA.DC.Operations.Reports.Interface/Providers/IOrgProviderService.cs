@@ -9,6 +9,6 @@ namespace ESFA.DC.Operations.Reports.Interface.Providers
 {
     public interface IOrgProviderService
     {
-        Task<IEnumerable<OrgModel>> GetOrgDetailsForUKPRNsAsync(List<long> uKPRNs, CancellationToken cancellationToken);
+        Task<IDictionary<int, OrgModel>> GetOrgDetailsForUKPRNsAsync(List<long> uKPRNs, CancellationToken cancellationToken);
     }
 }
