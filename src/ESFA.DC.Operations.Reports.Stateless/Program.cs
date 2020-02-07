@@ -3,6 +3,11 @@ using System.Diagnostics;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Integration.ServiceFabric;
+using ESFA.DC.JobContextManager.Interface;
+using ESFA.DC.JobContextManager.Model;
+using ESFA.DC.JobContextManager.Model.Interface;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace ESFA.DC.Operations.Reports.Stateless
@@ -16,18 +21,23 @@ namespace ESFA.DC.Operations.Reports.Stateless
         {
             try
             {
-                // The ServiceManifest.XML file defines one or more service type names.
-                // Registering a service maps a service type name to a .NET type.
-                // When Service Fabric creates an instance of this service type,
-                // an instance of the class is created in this host process.
+                // Setup Autofac
+                ContainerBuilder builder = DIComposition.BuildContainer();
 
-                ServiceRuntime.RegisterServiceAsync("ESFA.DC.Operations.Reports.StatelessType",
-                    context => new Stateless(context)).GetAwaiter().GetResult();
+                // Register the Autofac magic for Service Fabric support.
+                builder.RegisterServiceFabricSupport();
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(Stateless).Name);
+                // Register the stateless service.
+                builder.RegisterStatelessService<ServiceFabric.Common.Stateless>("ESFA.DC.Operations.Reports.StatelessType");
 
-                // Prevents this host process from terminating so services keep running.
-                Thread.Sleep(Timeout.Infinite);
+                using (var container = builder.Build())
+                {
+                    var jobContextMessage = container.Resolve<IMessageHandler<JobContextMessage>>();
+                    ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(ServiceFabric.Common.Stateless).Name);
+
+                    // Prevents this host process from terminating so services keep running.
+                    Thread.Sleep(Timeout.Infinite);
+                }
             }
             catch (Exception e)
             {

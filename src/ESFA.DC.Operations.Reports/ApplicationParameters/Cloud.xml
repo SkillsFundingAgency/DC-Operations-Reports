@@ -2,5 +2,21 @@
 <Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/ESFA.DC.Operations.Reports" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="ESFA.DC.Operations.Reports.Stateless_InstanceCount" Value="-1" />
+    <Parameter Name="ServiceBusConnectionString" Value="__ServiceBusConnectionString__" />
+    <Parameter Name="TopicName" Value="__TopicName__" />
+    <Parameter Name="SubscriptionName" Value="__SubscriptionName__" />
+    <Parameter Name="TopicMaxConcurrentCalls" Value="__TopicMaxConcurrentCalls__" />
+    <Parameter Name="TopicMaxCallbackTimeSpanMinutes" Value="__TopicMaxCallbackTimeSpanMinutes__" />
+    <Parameter Name="JobStatusQueueName" Value="__JobStatusQueueName__" />
+    <Parameter Name="JobStatusMaxConcurrentCalls" Value="__JobStatusMaxConcurrentCalls__" />
+    <Parameter Name="AuditQueueName" Value="__AuditQueueName__" />
+    <Parameter Name="AuditMaxConcurrentCalls" Value="__AuditMaxConcurrentCalls__" />
+    <Parameter Name="ProcessingServicePlacementConstraints" Value="__ProcessingServicePlacementConstraints__" />
+    <Parameter Name="LoggerConnectionString" Value="__LoggerConnectionString__" />
+    <Parameter Name="AzureStorageConnectionString" Value="__AzureStorageConnectionString__" />
+    <Parameter Name="AzureStorageContainerName" Value="__AzureStorageContainerName__" />
+    <Parameter Name="IlrDataStore1819ConnectionString" Value="__Ilr1819DataStoreConnectionString__" />
+    <Parameter Name="IlrDataStore1920ConnectionString" Value="__Ilr1920DataStoreConnectionString__" />
+    <Parameter Name="PimsDataConnectionString" Value="__PimsDataConnectionString__" />
   </Parameters>
 </Application>
