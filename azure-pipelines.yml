@@ -61,6 +61,16 @@ stages:
         restoreSolution: '$(Parameters.solution)'
         vstsFeed: '$(Parameters.nugetFeedName)'
 
+    - powershell: |
+   Copy-Item "Cloud.xml" "Local.1Node.xml" -Force
+   Copy-Item "Cloud.xml" "Local.5Node.xml" -Force
+   
+    
+        workingDirectory: 'src/$(ServiceFabricProjectLocation)\ApplicationParameters'
+        displayName: 'Generate Fake Config Files - $(ArtifactFolderName)'
+        continueOnError: true
+
+
     - task: MSBuild@1
       displayName: 'Build solution'
       enabled: true
