@@ -30,7 +30,11 @@ stages:
     pool:
       name: DCT
       demands:
-      - ServiceFabricSDK  
+        - msbuild
+        - visualstudio
+        - vstest
+        - IsBuildServer
+      #- ServiceFabricSDK  
       #- IsNewBuildServer
       
     steps:
