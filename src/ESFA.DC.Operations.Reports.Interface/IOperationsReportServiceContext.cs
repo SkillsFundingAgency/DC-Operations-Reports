@@ -23,5 +23,12 @@ namespace ESFA.DC.Operations.Reports.Interface
         IEnumerable<ReturnPeriod> ILRPeriods { get; }
 
         IEnumerable<ReturnPeriod> ILRPeriodsAdjustedTimes { get; }
+
+        int SelectedCollectionYear { get; }
+
+        IEnumerable<ReturnPeriod> SelectedILRPeriods { get; }
+
+        IEnumerable<ReturnPeriod> SelectedILRPeriodsAdjustedTimes { get; }
+
     }
 }

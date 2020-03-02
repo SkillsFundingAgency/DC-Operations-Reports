@@ -26,9 +26,9 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 
         public async Task<IEnumerable<ValidationRuleDetail>> Build(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
         {
-            var ilrPeriodsAdjustedTimes = reportServiceContext.ILRPeriodsAdjustedTimes;
+            var ilrPeriodsAdjustedTimes = reportServiceContext.SelectedILRPeriodsAdjustedTimes;
             var rule = reportServiceContext.Rule;
-            var validationRuleDetailsProviderService = _validationRulesProviderServices[(ILRYears)reportServiceContext.CollectionYear];
+            var validationRuleDetailsProviderService = _validationRulesProviderServices[(ILRYears)reportServiceContext.SelectedCollectionYear];
 
             var validationRuleDetails = await validationRuleDetailsProviderService.GetValidationRuleDetails(rule, ilrPeriodsAdjustedTimes, cancellationToken);
             var ukprns = validationRuleDetails.Where(x => x.UkPrn != null).Select(x => (long)x.UkPrn);

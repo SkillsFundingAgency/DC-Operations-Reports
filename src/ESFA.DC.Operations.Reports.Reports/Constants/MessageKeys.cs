@@ -10,6 +10,8 @@ namespace ESFA.DC.Operations.Reports.Reports.Constants
 
         public const string SelectedCollectionYear = "SelectedCollectionYear";
 
+        public const string ILRPeriods = "ILRPeriods";
+
         public const string SelectedILRPeriods = "SelectedILRPeriods";
     }
 }
