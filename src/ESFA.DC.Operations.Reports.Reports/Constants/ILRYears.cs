@@ -4,10 +4,10 @@ using System.Text;
 
 namespace ESFA.DC.Operations.Reports.Reports.Constants
 {
-    public enum ILRYears
+    public static class ILRYears
     {
-        Year1819 = 1819,
+        public const int Year1819 = 1819;
 
-        Year1920 = 1920
+        public const int Year1920 = 1920;
     }
 }

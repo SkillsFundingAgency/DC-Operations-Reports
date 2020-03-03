@@ -30,7 +30,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ValidationRuleDetailReport
             reportServiceContextMock.SetupGet(x => x.SelectedILRPeriodsAdjustedTimes).Returns(BuildReturnPeriodsModel());
 
             Mock<IOrgProviderService> orgProviderMock = new Mock<IOrgProviderService>();
-            Mock<IIndex<ILRYears, IValidationRuleDetailsProviderService>> validationRuleDetailsProviderMock = new Mock<IIndex<ILRYears, IValidationRuleDetailsProviderService>>();
+            Mock<IIndex<int, IValidationRuleDetailsProviderService>> validationRuleDetailsProviderMock = new Mock<IIndex<int, IValidationRuleDetailsProviderService>>();
 
             var orgInfo = BuildOrgModel();
             var buildValidationRuleDetails = BuildValidationRuleDetails();
@@ -38,7 +38,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ValidationRuleDetailReport
                 .ReturnsAsync(orgInfo);
 
             validationRuleDetailsProviderMock.Setup(x =>
-                    x[ILRYears.Year1920].GetValidationRuleDetails(It.IsAny<string>(), It.IsAny<IEnumerable<ReturnPeriod>>(),
+                    x[1920].GetValidationRuleDetails(It.IsAny<string>(), It.IsAny<IEnumerable<ReturnPeriod>>(),
                         It.IsAny<CancellationToken>()))
                 .ReturnsAsync(buildValidationRuleDetails);
             var modelBuilder =
