@@ -23,18 +23,24 @@ namespace ESFA.DC.Operations.Reports.Stateless.Context
         public int Period => int.Parse(_jobContextMessage.KeyValuePairs[ILRContextKeys.ReturnPeriod].ToString());
 
         public string Container => _jobContextMessage.KeyValuePairs[ILRContextKeys.Container].ToString();
-        
+
         public DateTime SubmissionDateTimeUtc => _jobContextMessage.SubmissionDateTimeUtc;
 
         public string Rule => _jobContextMessage.KeyValuePairs[MessageKeys.Rule].ToString();
 
         public int CollectionYear => int.Parse(_jobContextMessage.KeyValuePairs[ILRContextKeys.CollectionYear].ToString());
 
+        public int SelectedCollectionYear => _jobContextMessage.KeyValuePairs.ContainsKey(MessageKeys.SelectedCollectionYear) ? int.Parse(_jobContextMessage.KeyValuePairs[MessageKeys.SelectedCollectionYear].ToString()) : 0;
+
         public IEnumerable<string> Tasks => _jobContextMessage.Topics[_jobContextMessage.TopicPointer].Tasks.SelectMany(x => x.Tasks);
 
-        public IEnumerable<ReturnPeriod> ILRPeriods => (IEnumerable<ReturnPeriod>)_jobContextMessage.KeyValuePairs[MessageKeys.SelectedILRPeriods];
+        public IEnumerable<ReturnPeriod> ILRPeriods => (IEnumerable<ReturnPeriod>)_jobContextMessage.KeyValuePairs[MessageKeys.ILRPeriods];
 
-        public IEnumerable<ReturnPeriod> ILRPeriodsAdjustedTimes => GetReturnPeriodsWithAdjustedEndTimes((IEnumerable<ReturnPeriod>)_jobContextMessage.KeyValuePairs[MessageKeys.SelectedILRPeriods]);
+        public IEnumerable<ReturnPeriod> SelectedILRPeriods => (IEnumerable<ReturnPeriod>)_jobContextMessage.KeyValuePairs[MessageKeys.SelectedILRPeriods];
+
+        public IEnumerable<ReturnPeriod> ILRPeriodsAdjustedTimes => GetReturnPeriodsWithAdjustedEndTimes((IEnumerable<ReturnPeriod>)_jobContextMessage.KeyValuePairs[MessageKeys.ILRPeriods]);
+
+        public IEnumerable<ReturnPeriod> SelectedILRPeriodsAdjustedTimes => GetReturnPeriodsWithAdjustedEndTimes((IEnumerable<ReturnPeriod>)_jobContextMessage.KeyValuePairs[MessageKeys.SelectedILRPeriods]);
 
         public IEnumerable<ReturnPeriod> GetReturnPeriodsWithAdjustedEndTimes(IEnumerable<ReturnPeriod> returnPeriods)
         {

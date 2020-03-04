@@ -13,11 +13,11 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 {
     public class ValidationRuleDetailReportModelBuilder : IModelBuilder<IEnumerable<ValidationRuleDetail>>
     {
-        private readonly IIndex<ILRYears, IValidationRuleDetailsProviderService> _validationRulesProviderServices;
+        private readonly IIndex<int, IValidationRuleDetailsProviderService> _validationRulesProviderServices;
         private readonly IOrgProviderService _orgProviderService;
 
         public ValidationRuleDetailReportModelBuilder(
-            IIndex<ILRYears, IValidationRuleDetailsProviderService> validationRulesProviderServices,
+            IIndex<int, IValidationRuleDetailsProviderService> validationRulesProviderServices,
             IOrgProviderService orgProviderService)
         {
             _validationRulesProviderServices = validationRulesProviderServices;
@@ -26,9 +26,9 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
 
         public async Task<IEnumerable<ValidationRuleDetail>> Build(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
         {
-            var ilrPeriodsAdjustedTimes = reportServiceContext.ILRPeriodsAdjustedTimes;
+            var ilrPeriodsAdjustedTimes = reportServiceContext.SelectedILRPeriodsAdjustedTimes;
             var rule = reportServiceContext.Rule;
-            var validationRuleDetailsProviderService = _validationRulesProviderServices[(ILRYears)reportServiceContext.CollectionYear];
+            var validationRuleDetailsProviderService = _validationRulesProviderServices[reportServiceContext.SelectedCollectionYear];
 
             var validationRuleDetails = await validationRuleDetailsProviderService.GetValidationRuleDetails(rule, ilrPeriodsAdjustedTimes, cancellationToken);
             var ukprns = validationRuleDetails.Where(x => x.UkPrn != null).Select(x => (long)x.UkPrn);
