@@ -13,7 +13,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
 {
     public class OrgProviderService : IOrgProviderService
     {
-        private static Regex _upinRegex = new Regex(@"^\d{6}$");
+        private static Regex _upinRegex = new Regex(@"^\d{6}$", RegexOptions.Compiled);
         private readonly Func<IPimsContext> _orgContextFactory;
         
         public OrgProviderService(Func<IPimsContext> orgContextFactory)
