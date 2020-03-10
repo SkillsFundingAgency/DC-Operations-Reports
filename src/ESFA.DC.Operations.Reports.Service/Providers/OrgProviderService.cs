@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.Operations.Reports.Interface.Providers;
@@ -12,8 +13,9 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
 {
     public class OrgProviderService : IOrgProviderService
     {
+        private static Regex _upinRegex = new Regex(@"^\d{6}$");
         private readonly Func<IPimsContext> _orgContextFactory;
-
+        
         public OrgProviderService(Func<IPimsContext> orgContextFactory)
         {
             _orgContextFactory = orgContextFactory;
@@ -35,16 +37,25 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             {
                 for (int i = 0; i < count; i += pageSize)
                 {
-                    List<OrgModel> orgs = await orgContext.Orgs
+                    var orgs = await orgContext.Orgs
                         .Where(x => uKPRNs.Skip(i).Take(pageSize).Contains((long)x.OrgUkprn.Ukprn) && x.StatusId == 1)
-                        .Select(x => new OrgModel { Ukprn = (long)x.OrgUkprn.Ukprn, Name = x.OrgName })
                         .ToListAsync(cancellationToken);
 
-                    orgModels.AddRange(orgs);
+                    orgModels.AddRange(orgs.Where(o => IsValidUpin(o.OrgCode)).Select(x => new OrgModel { Ukprn = (long)x.OrgUkprn.Ukprn, Name = x.OrgName }));
                 }
             }
 
-            return orgModels.ToDictionary(k => (int) k.Ukprn, v => v);
+            return orgModels.ToDictionary(k => (int)k.Ukprn, v => v);
+        }
+
+        public bool IsValidUpin(string upin)
+        {
+            if (string.IsNullOrWhiteSpace(upin))
+            {
+                return false;
+            }
+
+            return _upinRegex.IsMatch(upin);
         }
     }
 }
