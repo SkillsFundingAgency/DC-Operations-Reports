@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
+using ESFA.DC.PIMS.EF;
 using ESFA.DC.PIMS.EF.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,16 +36,22 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             {
                 for (int i = 0; i < count; i += pageSize)
                 {
-                    List<OrgModel> orgs = await orgContext.Orgs
+                    var orgs = await orgContext.Orgs
                         .Where(x => uKPRNs.Skip(i).Take(pageSize).Contains((long)x.OrgUkprn.Ukprn) && x.StatusId == 1)
-                        .Select(x => new OrgModel { Ukprn = (long)x.OrgUkprn.Ukprn, Name = x.OrgName })
                         .ToListAsync(cancellationToken);
 
-                    orgModels.AddRange(orgs);
+                    RemoveInvalidOrganisations(orgs);
+
+                    orgModels.AddRange(orgs.Select(x => new OrgModel { Ukprn = (long)x.OrgUkprn.Ukprn, Name = x.OrgName }));
                 }
             }
 
-            return orgModels.ToDictionary(k => (int) k.Ukprn, v => v);
+            return orgModels.ToDictionary(k => (int)k.Ukprn, v => v);
+        }
+
+        private void RemoveInvalidOrganisations(List<Org> orgs)
+        {
+            orgs.RemoveAll(o => !UpinValidator.IsValid(o.OrgCode));
         }
     }
 }
