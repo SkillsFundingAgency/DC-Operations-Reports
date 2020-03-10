@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ESFA.DC.Operations.Reports.Service.Tests
 {
-    public class UpinValidatorTests
+    public class OrgProviderServiceTests
     {
         [Theory]
         [InlineData("123456", true)]
@@ -17,13 +17,16 @@ namespace ESFA.DC.Operations.Reports.Service.Tests
         [InlineData(null, false)]
         [InlineData("", false)]
         [InlineData(" ", false)]
-        public void UpinValidator_IsValid(string valueToCheck, bool expectedresult)
+        public void IsValidUpin(string valueToCheck, bool expectedResult)
         {
+            // Arrange
+            var sut = new OrgProviderService(null);
+
             // Act
-            var result = UpinValidator.IsValid(valueToCheck);
+            var result = sut.IsValidUpin(valueToCheck);
 
             // Assert
-            Assert.Equal(result, expectedresult);
+            Assert.Equal(result, expectedResult);
         }
     }
 }
