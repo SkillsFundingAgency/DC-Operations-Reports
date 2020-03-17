@@ -38,6 +38,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                 for (int i = 0; i < count; i += pageSize)
                 {
                     var orgs = await orgContext.Orgs
+                        .Include(x => x.OrgUkprn)
                         .Where(x => uKPRNs.Skip(i).Take(pageSize).Contains((long)x.OrgUkprn.Ukprn) && x.StatusId == 1)
                         .ToListAsync(cancellationToken);
 
