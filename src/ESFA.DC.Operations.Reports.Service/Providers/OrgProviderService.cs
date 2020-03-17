@@ -38,11 +38,11 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                 for (int i = 0; i < count; i += pageSize)
                 {
                     var orgs = await orgContext.Orgs
-                        .Include(x => x.OrgUkprn)
                         .Where(x => uKPRNs.Skip(i).Take(pageSize).Contains((long)x.OrgUkprn.Ukprn) && x.StatusId == 1)
+                        .Select(x => new { x.OrgUkprn.Ukprn, x.OrgName, x.OrgCode })
                         .ToListAsync(cancellationToken);
 
-                    orgModels.AddRange(orgs.Where(o => IsValidUpin(o.OrgCode)).Select(x => new OrgModel { Ukprn = (long)x.OrgUkprn.Ukprn, Name = x.OrgName }));
+                    orgModels.AddRange(orgs.Where(o => IsValidUpin(o.OrgCode)).Select(x => new OrgModel { Ukprn = (long)x.Ukprn, Name = x.OrgName }));
                 }
             }
 
