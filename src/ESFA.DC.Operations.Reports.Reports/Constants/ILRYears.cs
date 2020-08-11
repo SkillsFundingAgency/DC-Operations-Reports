@@ -9,5 +9,7 @@ namespace ESFA.DC.Operations.Reports.Reports.Constants
         public const int Year1819 = 1819;
 
         public const int Year1920 = 1920;
+
+        public const int Year2021 = 2021;
     }
 }

@@ -9,6 +9,8 @@ using ESFA.DC.ILR1819.DataStore.EF;
 using ESFA.DC.ILR1819.DataStore.EF.Interface;
 using ESFA.DC.ILR1920.DataStore.EF;
 using ESFA.DC.ILR1920.DataStore.EF.Interface;
+using ESFA.DC.ILR2021.DataStore.EF;
+using ESFA.DC.ILR2021.DataStore.EF.Interface;
 using ESFA.DC.Operations.Reports.Stateless.Config;
 using ESFA.DC.Operations.Reports.Stateless.Modules;
 using ESFA.DC.PIMS.EF;
@@ -32,6 +34,7 @@ namespace ESFA.DC.Operations.Reports.Stateless
             var reportServiceConfiguration = serviceFabricConfigurationService.GetConfigSectionAs<ReportServiceConfiguration>("ReportServiceConfiguration");
             var azureStorageFileServiceConfiguration = serviceFabricConfigurationService.GetConfigSectionAs<AzureStorageFileServiceConfiguration>("AzureStorageFileServiceConfiguration");
 
+            containerBuilder.RegisterType<ILR2021_DataStoreEntities>().As<IIlr2021Context>();
             containerBuilder.RegisterType<ILR1920_DataStoreEntities>().As<IIlr1920RulebaseContext>();
             containerBuilder.RegisterType<ILR1819_DataStoreEntities>().As<IIlr1819RulebaseContext>();
             containerBuilder.RegisterType<PimsContext>().As<IPimsContext>();
@@ -58,6 +61,18 @@ namespace ESFA.DC.Operations.Reports.Stateless
                     return optionsBuilder.Options;
                 })
                 .As<DbContextOptions<ILR1920_DataStoreEntities>>()
+                .SingleInstance();
+
+            containerBuilder.Register(context =>
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<ILR2021_DataStoreEntities>();
+                    optionsBuilder.UseSqlServer(
+                        reportServiceConfiguration.IlrDataStore2021ConnectionString,
+                        options => options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), new List<int>()));
+
+                    return optionsBuilder.Options;
+                })
+                .As<DbContextOptions<ILR2021_DataStoreEntities>>()
                 .SingleInstance();
 
             containerBuilder.Register(context =>

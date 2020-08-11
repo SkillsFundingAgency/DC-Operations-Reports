@@ -18,6 +18,7 @@ namespace ESFA.DC.Operations.Reports.Stateless.Modules
             containerBuilder.RegisterType<CsvFileService>().As<ICsvFileService>();
             containerBuilder.RegisterType<ValidationRuleDetails1819ProviderService>().Keyed<IValidationRuleDetailsProviderService>(ILRYears.Year1819);
             containerBuilder.RegisterType<ValidationRuleDetails1920ProviderService>().Keyed<IValidationRuleDetailsProviderService>(ILRYears.Year1920);
+            containerBuilder.RegisterType<ValidationRuleDetails2021ProviderService>().Keyed<IValidationRuleDetailsProviderService>(ILRYears.Year2021);
             containerBuilder.RegisterType<OrgProviderService>().As<IOrgProviderService>();
         }
     }
