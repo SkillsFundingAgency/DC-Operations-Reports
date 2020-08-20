@@ -19,6 +19,9 @@ namespace ESFA.DC.Operations.Reports.Stateless.Modules
             containerBuilder.RegisterType<ValidationRuleDetails1819ProviderService>().Keyed<IValidationRuleDetailsProviderService>(ILRYears.Year1819);
             containerBuilder.RegisterType<ValidationRuleDetails1920ProviderService>().Keyed<IValidationRuleDetailsProviderService>(ILRYears.Year1920);
             containerBuilder.RegisterType<ValidationRuleDetails2021ProviderService>().Keyed<IValidationRuleDetailsProviderService>(ILRYears.Year2021);
+
+            containerBuilder.RegisterType<ILRProvidersReturningFirstTimePerDayProviderService>().As<IILRProvidersReturningFirstTimePerDayProviderService>();
+
             containerBuilder.RegisterType<OrgProviderService>().As<IOrgProviderService>();
         }
     }

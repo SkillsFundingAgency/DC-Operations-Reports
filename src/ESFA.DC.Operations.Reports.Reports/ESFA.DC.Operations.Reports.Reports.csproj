@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -13,14 +13,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ESFA.DC.Operations.Reports.Interface\ESFA.DC.Operations.Reports.Interface.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Cells" Version="19.12.0" />
     <PackageReference Include="Autofac" Version="4.9.2" />
     <PackageReference Include="CsvHelper" Version="12.1.3" />
     <PackageReference Include="ESFA.DC.CsvService" Version="0.1.28-beta0001" />
-    <PackageReference Include="ESFA.DC.FileService" Version="0.1.28-beta0001" />
+    <PackageReference Include="ESFA.DC.ExcelService" Version="0.1.1" />
+    <PackageReference Include="ESFA.DC.FileService" Version="0.1.40-beta0001" />
     <PackageReference Include="ESFA.DC.ILR1920.Database.EF" Version="0.0.551" />
     <PackageReference Include="ESFA.DC.Serialization.Json" Version="0.1.6-beta0001" />
     <PackageReference Include="Microsoft.ServiceFabric" Version="6.5.676" />
