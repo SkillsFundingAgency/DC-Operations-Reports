@@ -42,7 +42,7 @@ namespace ESFA.DC.Operations.Reports.Reports.ILRProvidersReturningFirstTimePerDa
         public async Task<IEnumerable<string>> GenerateAsync(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
         {
             var ilrProvidersReturningFirstTimePerDayModel = await _modelBuilder.Build(reportServiceContext, cancellationToken);
-            var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, false, false);
+            var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, true, false);
 
             await GenerateWorkBookAsync(ilrProvidersReturningFirstTimePerDayModel, TemplateName, ReportDataSource, reportServiceContext, reportFileName, cancellationToken);
             return new[] { reportFileName };

@@ -7,8 +7,6 @@ namespace ESFA.DC.Operations.Reports.Service
 {
     public class FileNameService : IFileNameService
     {
-        private const string Year = @"2019-20";
-
         private readonly IDateTimeProvider _dateTimeProvider;
 
         private readonly IDictionary<OutputTypes, string> _extensionsDictionary = new Dictionary<OutputTypes, string>()
@@ -24,16 +22,20 @@ namespace ESFA.DC.Operations.Reports.Service
             _dateTimeProvider = dateTimeProvider;
         }
 
-        public string Generate(IOperationsReportServiceContext reportServiceContext, string fileName, OutputTypes outputType, bool includeDateTime = true, bool includeYearPeriodAndShortCode = true)
+        public string Generate(IOperationsReportServiceContext reportServiceContext, string fileName, OutputTypes outputType, bool includeDateTime = true, bool includeYearPeriodAndShortCode = true, bool includeJobId = false)
         {
             var stringBuilder = new StringBuilder();
 
             stringBuilder.Append(GetPath(reportServiceContext));
 
+            if (includeJobId)
+            {
+                stringBuilder.Append(AppendJobId(reportServiceContext));
+            }
+
             if (includeYearPeriodAndShortCode)
             {
                 stringBuilder.Append(GetPrefix(reportServiceContext));
-                stringBuilder.Append(" ");
             }
 
             stringBuilder.Append(fileName);
@@ -50,8 +52,10 @@ namespace ESFA.DC.Operations.Reports.Service
 
         public string GetExtension(OutputTypes outputType) => _extensionsDictionary[outputType];
 
-        public string GetPrefix(IOperationsReportServiceContext reportServiceContext) => $"{Year} R{reportServiceContext.Period:D2}";
+        public string GetPrefix(IOperationsReportServiceContext reportServiceContext) => $"{reportServiceContext.CollectionYear}/{reportServiceContext.ReturnPeriodName}/";
 
-        protected virtual string GetPath(IOperationsReportServiceContext reportServiceContext) => $"Reports/{reportServiceContext.JobId}/";
+        protected virtual string GetPath(IOperationsReportServiceContext reportServiceContext) => $"Reports/";
+
+        protected virtual string AppendJobId(IOperationsReportServiceContext reportServiceContext) => $"{reportServiceContext.JobId}/";
     }
 }

@@ -17,6 +17,7 @@
     <Parameter Name="IlrDataStore1920ConnectionString" Value="" />
     <Parameter Name="IlrDataStore2021ConnectionString" Value="" />
     <Parameter Name="PimsDataConnectionString" Value="" />
+    <Parameter Name="JobManagementConnectionString" Value="" />
   </Section>
   <Section Name="AzureStorageFileServiceConfiguration">
     <Parameter Name="ConnectionString" Value="" />

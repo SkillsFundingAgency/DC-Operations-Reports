@@ -24,6 +24,8 @@ namespace ESFA.DC.Operations.Reports.Stateless.Context
 
         public string Container => _jobContextMessage.KeyValuePairs[ILRContextKeys.Container].ToString();
 
+        public string ReturnPeriodName => _jobContextMessage.KeyValuePairs[ILRContextKeys.ReturnPeriodName].ToString();
+
         public DateTime SubmissionDateTimeUtc => _jobContextMessage.SubmissionDateTimeUtc;
 
         public string Rule => _jobContextMessage.KeyValuePairs[MessageKeys.Rule].ToString();

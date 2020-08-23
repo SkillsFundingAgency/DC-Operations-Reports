@@ -9,5 +9,7 @@ namespace ESFA.DC.Operations.Reports.Interface
         string IlrDataStore1920ConnectionString { get; }
 
         string IlrDataStore2021ConnectionString { get; }
+
+        string JobManagementConnectionString { get; }
     }
 }

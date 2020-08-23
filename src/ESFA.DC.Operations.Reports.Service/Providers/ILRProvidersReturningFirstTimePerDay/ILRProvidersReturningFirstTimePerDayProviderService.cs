@@ -1,62 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ESFA.DC.CollectionsManagement.Models;
-using ESFA.DC.ILR1920.DataStore.EF.Interface;
+using Dapper;
 using ESFA.DC.Logging.Interfaces;
+using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
-using ESFA.DC.Operations.Reports.Service.Providers.Abstract;
 
 namespace ESFA.DC.Operations.Reports.Service.Providers
 {
     public class ILRProvidersReturningFirstTimePerDayProviderService : IILRProvidersReturningFirstTimePerDayProviderService
     {
-        private readonly Func<IIlr1920RulebaseContext> _ilrContextFactory;
+        private readonly IReportServiceConfiguration _reportServiceConfiguration;
 
         public ILRProvidersReturningFirstTimePerDayProviderService(
             ILogger logger,
-            Func<IIlr1920RulebaseContext> ilrContextFactory)
+            IReportServiceConfiguration reportServiceConfiguration)
         {
-            _ilrContextFactory = ilrContextFactory;
+            _reportServiceConfiguration = reportServiceConfiguration;
         }
 
-        public async Task<ILRProvidersReturningFirstTimePerDayModel> GetILRProvidersReturningFirstTimePerDay(CancellationToken cancellationToken)
+        public async Task<IEnumerable<ILRProvidersReturningFirstTimePerDay>> GetILRProvidersReturningFirstTimePerDay(int collectionYear, int period, CancellationToken cancellationToken)
         {
-            var model = new ILRProvidersReturningFirstTimePerDayModel();
-            var ilrProvidersReturningFirstTimePerDays = new List<ILRProvidersReturningFirstTimePerDay>()
-            {
-                new ILRProvidersReturningFirstTimePerDay()
-                {
-                    Days = -25,
-                    Submissions = 100
-                },
-                new ILRProvidersReturningFirstTimePerDay()
-                {
-                    Days = -24,
-                    Submissions = 90
-                },
-                new ILRProvidersReturningFirstTimePerDay()
-                {
-                    Days = -23,
-                    Submissions = 80
-                },
-                new ILRProvidersReturningFirstTimePerDay()
-                {
-                    Days = -22,
-                    Submissions = 70
-                },
-                new ILRProvidersReturningFirstTimePerDay()
-                {
-                    Days = -21,
-                    Submissions = 150
-                },
-            };
+            var ilrProvidersReturningFirstTimePerDays = new List<ILRProvidersReturningFirstTimePerDay>();
 
-            model.IlrProvidersReturningFirstTimePerDaysList = ilrProvidersReturningFirstTimePerDays;
-            return model;
+            using (var connection = new SqlConnection(_reportServiceConfiguration.JobManagementConnectionString))
+            {
+                await connection.OpenAsync();
+
+                ilrProvidersReturningFirstTimePerDays = (await connection.QueryAsync<ILRProvidersReturningFirstTimePerDay>( "dbo.GetIlrProvidersReturningFirstTimePerDay", new
+                {
+                    periodNumber = period,
+                    collectionYear = collectionYear
+                }, commandType : CommandType.StoredProcedure)).ToList();
+            }
+
+            return ilrProvidersReturningFirstTimePerDays;
         }
     }
 }

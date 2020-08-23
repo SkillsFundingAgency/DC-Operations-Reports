@@ -18,6 +18,7 @@
     <Parameter Name="IlrDataStore1819ConnectionString" Value="__Ilr1819DataStoreConnectionString__" />
     <Parameter Name="IlrDataStore1920ConnectionString" Value="__Ilr1920DataStoreConnectionString__" />
     <Parameter Name="IlrDataStore2021ConnectionString" Value="__Ilr2021DataStoreConnectionString__" />
+    <Parameter Name="JobManagementConnectionString" Value="__JobManagementConnectionString__" />
     <Parameter Name="PimsDataConnectionString" Value="__PimsDataConnectionString__" />
   </Parameters>
 </Application>
