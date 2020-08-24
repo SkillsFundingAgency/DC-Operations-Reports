@@ -20,6 +20,7 @@
     <Parameter Name="IlrDataStore2021ConnectionString" DefaultValue="" />
     <Parameter Name="JobManagementConnectionString" DefaultValue="" />
     <Parameter Name="PimsDataConnectionString" DefaultValue="" />
+    <Parameter Name="AsposeLicence" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -50,6 +51,9 @@
           </Section>
           <Section Name="AzureStorageFileServiceConfiguration">
             <Parameter Name="ConnectionString" Value="[AzureStorageConnectionString]" />
+          </Section>
+          <Section Name="SoftwareLicenceSection">
+            <Parameter Name="AsposeLicence" Value="[AsposeLicence]" />
           </Section>
         </Settings>
       </ConfigOverride>

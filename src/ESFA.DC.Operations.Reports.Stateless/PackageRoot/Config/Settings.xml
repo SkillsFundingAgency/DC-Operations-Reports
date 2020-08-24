@@ -19,6 +19,9 @@
     <Parameter Name="PimsDataConnectionString" Value="" />
     <Parameter Name="JobManagementConnectionString" Value="" />
   </Section>
+  <Section Name="SoftwareLicenceSection">
+    <Parameter Name="AsposeLicence" Value="" />
+  </Section>
   <Section Name="AzureStorageFileServiceConfiguration">
     <Parameter Name="ConnectionString" Value="" />
   </Section>
