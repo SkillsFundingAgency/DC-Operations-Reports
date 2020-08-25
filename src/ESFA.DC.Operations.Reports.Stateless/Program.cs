@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Integration.ServiceFabric;
+using ESFA.DC.ExcelService.Interface;
 using ESFA.DC.JobContextManager.Interface;
 using ESFA.DC.JobContextManager.Model;
 using ESFA.DC.JobContextManager.Model.Interface;
@@ -30,14 +31,6 @@ namespace ESFA.DC.Operations.Reports.Stateless
                 
                 // License Aspose.Cells
                 SoftwareLicenceSection softwareLicenceSection = serviceFabricConfigurationService.GetConfigSectionAs<SoftwareLicenceSection>(nameof(SoftwareLicenceSection));
-                if (!string.IsNullOrEmpty(softwareLicenceSection.AsposeLicence))
-                {
-                    using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(softwareLicenceSection.AsposeLicence.Replace("&lt;", "<").Replace("&gt;", ">"))))
-                    {
-                        new Aspose.Cells.License().SetLicense(ms);
-                    }
-                }
-
 
                 // Setup Autofac
                 ContainerBuilder builder = DIComposition.BuildContainer();
@@ -50,7 +43,15 @@ namespace ESFA.DC.Operations.Reports.Stateless
 
                 using (var container = builder.Build())
                 {
-                    var jobContextMessage = container.Resolve<IMessageHandler<JobContextMessage>>();
+                    var excelFileService = container.Resolve<IExcelFileService>();
+                    if (!string.IsNullOrEmpty(softwareLicenceSection.AsposeLicence))
+                    {
+                        using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(softwareLicenceSection.AsposeLicence.Replace("&lt;", "<").Replace("&gt;", ">"))))
+                        {
+                            excelFileService.ApplyLicense(ms);
+                        }
+                    }
+                
                     ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(ServiceFabric.Common.Stateless).Name);
 
                     // Prevents this host process from terminating so services keep running.
