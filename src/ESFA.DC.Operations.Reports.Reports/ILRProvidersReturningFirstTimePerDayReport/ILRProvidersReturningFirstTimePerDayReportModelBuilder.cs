@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Aspose.Cells;
-using Autofac.Features.Indexed;
 using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
-using ESFA.DC.Operations.Reports.Reports.Constants;
-using ESFA.DC.Operations.Reports.Reports.Extensions;
 
 namespace ESFA.DC.Operations.Reports.Reports.ILRProvidersReturningFirstTimePerDayReport
 {
@@ -36,10 +31,8 @@ namespace ESFA.DC.Operations.Reports.Reports.ILRProvidersReturningFirstTimePerDa
 
             model.IlrProvidersReturningFirstTimePerDaysList = ilrProvidersReturningFirstTimePerDay.ToList();
             model.Period = reportServiceContext.ReturnPeriodName;
-
-            model.ReportTitle =
-                $"{reportServiceContext.CollectionYear} {Title} - {_dateTimeProvider.ConvertUtcToUk(reportServiceContext.SubmissionDateTimeUtc):dd MMM yyyy HH:mm:ss}";
-            model.ChartTitle = $"{reportServiceContext.CollectionYear} {Title} {ChartScale} - {model.Period}";
+            model.ReportTitle = $"{reportServiceContext.CollectionYear} {Title} - {_dateTimeProvider.ConvertUtcToUk(reportServiceContext.SubmissionDateTimeUtc):dd MMM yyyy HH:mm:ss}";
+            model.ChartTitle =  $"{reportServiceContext.CollectionYear} {Title} {ChartScale} - {model.Period}";
             return model;
         }
     }

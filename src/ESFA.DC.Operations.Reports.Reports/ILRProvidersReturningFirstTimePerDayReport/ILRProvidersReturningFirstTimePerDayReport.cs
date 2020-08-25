@@ -16,8 +16,6 @@ namespace ESFA.DC.Operations.Reports.Reports.ILRProvidersReturningFirstTimePerDa
 {
     public class ILRProvidersReturningFirstTimePerDayReport : AbstractReport, IReport
     {
-        private readonly IFileService _fileService;
-        private readonly IJsonSerializationService _serializationService;
         private readonly IExcelFileService _excelFileService;
         private readonly IFileNameService _fileNameService;
         private readonly IModelBuilder<ILRProvidersReturningFirstTimePerDayModel> _modelBuilder;
@@ -25,15 +23,11 @@ namespace ESFA.DC.Operations.Reports.Reports.ILRProvidersReturningFirstTimePerDa
         private const string ReportDataSource = "IlrReturningProvidersInfo";
 
         public ILRProvidersReturningFirstTimePerDayReport(
-            IFileService fileService,
-            IJsonSerializationService serializationService,
             IExcelFileService excelFileService,
             IFileNameService fileNameService,
             IModelBuilder<ILRProvidersReturningFirstTimePerDayModel> modelBuilder)
             : base(ReportTaskNameConstants.ILRProvidersReturningFirstTimePerDayReport, "ILR Providers Returning First Time Per Day Report")
         {
-            _fileService = fileService;
-            _serializationService = serializationService;
             _excelFileService = excelFileService;
             _fileNameService = fileNameService;
             _modelBuilder = modelBuilder;
