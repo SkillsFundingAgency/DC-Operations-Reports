@@ -3,5 +3,6 @@
     public static class ReportTaskNameConstants
     {
         public const string ValidationRuleDetailReport = "TaskGenerateValidationRuleDetailReport";
+        public const string ILRProvidersReturningFirstTimePerDayReport = "TaskGenerateILRReturningProvidersReport";
     }
 }

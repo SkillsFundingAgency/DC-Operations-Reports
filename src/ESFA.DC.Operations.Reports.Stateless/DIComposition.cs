@@ -11,6 +11,7 @@ using ESFA.DC.ILR1920.DataStore.EF;
 using ESFA.DC.ILR1920.DataStore.EF.Interface;
 using ESFA.DC.ILR2021.DataStore.EF;
 using ESFA.DC.ILR2021.DataStore.EF.Interface;
+using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Stateless.Config;
 using ESFA.DC.Operations.Reports.Stateless.Modules;
 using ESFA.DC.PIMS.EF;
@@ -38,6 +39,7 @@ namespace ESFA.DC.Operations.Reports.Stateless
             containerBuilder.RegisterType<ILR1920_DataStoreEntities>().As<IIlr1920RulebaseContext>();
             containerBuilder.RegisterType<ILR1819_DataStoreEntities>().As<IIlr1819RulebaseContext>();
             containerBuilder.RegisterType<PimsContext>().As<IPimsContext>();
+            containerBuilder.RegisterInstance(reportServiceConfiguration).As<IReportServiceConfiguration>();
 
             containerBuilder.Register(context =>
                 {
