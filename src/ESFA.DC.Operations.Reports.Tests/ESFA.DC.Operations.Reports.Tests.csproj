@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\ILRFileSubmissionsPerDayReport\ILRFileSubmissionsPerDayReportModelBuilderTests.cs" />
     <Compile Include="Reports\ILRProvidersReturningFirstTimePerDayReport\ILRProvidersReturningFirstTimePerDayReportModelBuilderTests.cs" />
     <Compile Include="Reports\ValidationRuleDetailReport\ValidationRuleDetailClassMapTests.cs" />
     <Compile Include="Reports\ValidationRuleDetailReport\ValidationRuleDetailReportModelBuilderTests.cs" />
