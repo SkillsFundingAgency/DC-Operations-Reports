@@ -15,7 +15,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
     {
         private static Regex _upinRegex = new Regex(@"^\d{6}$", RegexOptions.Compiled);
         private readonly Func<IPimsContext> _orgContextFactory;
-        
+
         public OrgProviderService(Func<IPimsContext> orgContextFactory)
         {
             _orgContextFactory = orgContextFactory;

@@ -6,8 +6,7 @@ using ESFA.DC.Operations.Reports.Model;
 
 namespace ESFA.DC.Operations.Reports.Interface.Providers
 {
-    public interface IILRProvidersReturningFirstTimePerDayProviderService
+    public interface IILRProvidersReturningFirstTimePerDayProviderService : IILRSubmissionsProviderService
     {
-       Task<IEnumerable<ILRProvidersReturningFirstTimePerDay>> GetILRProvidersReturningFirstTimePerDay(int collectionYear, int period, CancellationToken cancellationToken);
     }
 }

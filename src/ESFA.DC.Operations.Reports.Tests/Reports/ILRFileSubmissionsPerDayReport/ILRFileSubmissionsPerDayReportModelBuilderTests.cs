@@ -27,8 +27,8 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ILRFileSubmissionsPerDayRepor
             reportServiceContextMock.SetupGet(x => x.ReturnPeriodName).Returns("R13");
 
             var providerServiceMock = new Mock<IILRFileSubmissionsPerDayProviderService>();
-            providerServiceMock.Setup(x => x.GetILRFileSubmissionsPerDay(It.IsAny<int>(), It.IsAny<int>(), CancellationToken.None)).ReturnsAsync(BuildIlrReturns());
-           
+            providerServiceMock.Setup(x => x.GetSubmissionsPerDay(It.IsAny<int>(), It.IsAny<int>(), CancellationToken.None)).ReturnsAsync(BuildIlrReturns());
+
             var dateTimeProviderMock = new Mock<IDateTimeProvider>();
             dateTimeProviderMock.Setup(p => p.ConvertUtcToUk(submissionDateTime)).Returns(ukDateTime);
 
@@ -39,34 +39,34 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ILRFileSubmissionsPerDayRepor
             result.Period.Should().Be("R13");
             result.ChartTitle.Should().Be("1920 ILR File Submissions per Day per Period (Log 2 Scale) - R13");
             result.ReportTitle.Should().Be("1920 ILR File Submissions per Day per Period - 01 Jan 2020 01:01:01");
-            result.IlrFileSubmissionsPerDayList.Count.Should().Be(5);
+            result.SubmissionsPerDayList.Count.Should().Be(5);
         }
 
-        private List<ILRFileSubmissionsPerDay> BuildIlrReturns()
+        private List<SubmissionsPerDay> BuildIlrReturns()
         {
-            return new List<ILRFileSubmissionsPerDay>
+            return new List<SubmissionsPerDay>
             {
-                new ILRFileSubmissionsPerDay()
+                new SubmissionsPerDay()
                 {
                     DaysToClose = -25,
                     NumberOfSubmissions = 100
                 },
-                new ILRFileSubmissionsPerDay()
+                new SubmissionsPerDay()
                 {
                     DaysToClose = -24,
                     NumberOfSubmissions = 90
                 },
-                new ILRFileSubmissionsPerDay()
+                new SubmissionsPerDay()
                 {
                     DaysToClose = -23,
                     NumberOfSubmissions = 80
                 },
-                new ILRFileSubmissionsPerDay()
+                new SubmissionsPerDay()
                 {
                     DaysToClose = -22,
                     NumberOfSubmissions = 70
                 },
-                new ILRFileSubmissionsPerDay()
+                new SubmissionsPerDay()
                 {
                     DaysToClose = -21,
                     NumberOfSubmissions = 150

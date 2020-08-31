@@ -6,7 +6,8 @@ using ESFA.DC.Operations.Reports.Model;
 
 namespace ESFA.DC.Operations.Reports.Interface.Providers
 {
-    public interface IILRFileSubmissionsPerDayProviderService : IILRSubmissionsProviderService
+    public interface IILRSubmissionsProviderService
     {
+        Task<IEnumerable<SubmissionsPerDay>> GetSubmissionsPerDay(int collectionYear, int period, CancellationToken cancellationToken);
     }
 }

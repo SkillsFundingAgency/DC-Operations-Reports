@@ -43,7 +43,7 @@ namespace ESFA.DC.Operations.Reports.Reports.ValidationRuleDetailReport
         {
             var validationRuleDetails = await _modelBuilder.Build(reportServiceContext, cancellationToken);
             var fileNameCsv = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Csv, false, false, includeJobId: true);
-            var fileNameJson = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Json,false, false, includeJobId: true);
+            var fileNameJson = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Json, false, false, includeJobId: true);
 
             var validationRuleDetailsList = validationRuleDetails.ToList();
             using (var stream = await _fileService.OpenWriteStreamAsync(fileNameJson, reportServiceContext.Container, cancellationToken))

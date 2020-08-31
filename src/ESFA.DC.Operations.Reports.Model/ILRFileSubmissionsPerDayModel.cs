@@ -1,15 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace ESFA.DC.Operations.Reports.Model
+﻿namespace ESFA.DC.Operations.Reports.Model
 {
-    public class ILRFileSubmissionsPerDayModel
+    public class ILRFileSubmissionsPerDayModel : BaseSubmissionsModel
     {
-        public string ReportTitle { get; set; }
-
-        public string ChartTitle { get; set; }
-
-        public string Period { get; set; }
-
-        public List<ILRFileSubmissionsPerDay> IlrFileSubmissionsPerDayList { get; set; }
     }
 }

@@ -12,50 +12,18 @@ using ESFA.DC.Operations.Reports.Reports.Constants;
 
 namespace ESFA.DC.Operations.Reports.Reports.ILRFileSubmissionsPerDayReport
 {
-    public class ILRFileSubmissionPerDayReport : AbstractReport, IReport
+    public class ILRFileSubmissionPerDayReport : AbstractILRSubmissionsReport<ILRFileSubmissionsPerDayModel>
     {
-        private readonly IExcelFileService _excelFileService;
-        private readonly IFileNameService _fileNameService;
-        private readonly IModelBuilder<ILRFileSubmissionsPerDayModel> _modelBuilder;
-        private const string TemplateName = "ILRFileSubmissionPerDayReport.xlsx";
-        private const string ReportDataSource = "IlrSubmissionsInfo";
-
         public ILRFileSubmissionPerDayReport(
             IExcelFileService excelFileService,
             IFileNameService fileNameService,
             IModelBuilder<ILRFileSubmissionsPerDayModel> modelBuilder)
-            : base(ReportTaskNameConstants.ILRFileSubmissionsPerDayReport, "ILR File Submissions Per Day Report")
+            : base(ReportTaskNameConstants.ILRFileSubmissionsPerDayReport, "ILR File Submissions Per Day Report", modelBuilder, excelFileService, fileNameService)
         {
-            _excelFileService = excelFileService;
-            _fileNameService = fileNameService;
-            _modelBuilder = modelBuilder;
         }
 
-        public async Task<IEnumerable<string>> GenerateAsync(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
-        {
-            var ilrFileSubmissionsPerDayModel = await _modelBuilder.Build(reportServiceContext, cancellationToken);
-            var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, true, false);
+        public override string TemplateName => "ILRFileSubmissionPerDayReport.xlsx";
 
-            await GenerateWorkBookAsync(ilrFileSubmissionsPerDayModel, TemplateName, ReportDataSource, reportServiceContext, reportFileName, cancellationToken);
-            return new[] { reportFileName };
-        }
-
-        private async Task GenerateWorkBookAsync(
-             ILRFileSubmissionsPerDayModel model,
-             string templateFileName,
-             string dataSource,
-             IOperationsReportServiceContext reportServiceContext,
-             string reportFileName,
-             CancellationToken cancellationToken)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            string resourceName = assembly.GetManifestResourceNames().Single(str => str.EndsWith(templateFileName));
-
-            using (Stream manifestResourceStream = assembly.GetManifestResourceStream(resourceName))
-            {
-                var workbook = _excelFileService.BindExcelTemplateToWorkbook(model, dataSource, manifestResourceStream);
-                await _excelFileService.SaveWorkbookAsync(workbook, reportFileName, reportServiceContext.Container, cancellationToken);
-            }
-        }
+        public override string ReportDataSource => "IlrSubmissionsInfo";
     }
 }
