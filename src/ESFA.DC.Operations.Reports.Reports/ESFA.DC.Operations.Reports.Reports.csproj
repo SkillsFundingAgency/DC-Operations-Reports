@@ -13,10 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <None Remove="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <EmbeddedResource Include="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
 
