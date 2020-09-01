@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ESFA.DC.Operations.Reports.Model
 {
-    public class ILRProvidersReturningFirstTimePerDay
+    public class SubmissionsPerDay
     {
         public int DaysToClose { get; set; }
 

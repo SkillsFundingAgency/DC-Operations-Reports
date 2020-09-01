@@ -6,7 +6,7 @@ using ESFA.DC.Operations.Reports.Model;
 
 namespace ESFA.DC.Operations.Reports.Interface.Providers
 {
-    public interface IILRProvidersReturningFirstTimePerDayProviderService : IILRSubmissionsProviderService
+    public interface IILRFileSubmissionsPerDayProviderService : IILRSubmissionsProviderService
     {
     }
 }

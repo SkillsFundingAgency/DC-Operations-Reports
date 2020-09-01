@@ -5,15 +5,15 @@ using ESFA.DC.Operations.Reports.Service.Providers.Abstract;
 
 namespace ESFA.DC.Operations.Reports.Service.Providers
 {
-    public class ILRProvidersReturningFirstTimePerDayProviderService : AbstractILRSubmissionsPerDayService,  IILRProvidersReturningFirstTimePerDayProviderService
+    public class ILRFileSubmissionsPerDayProviderService : AbstractILRSubmissionsPerDayService, IILRFileSubmissionsPerDayProviderService
     {
-        public ILRProvidersReturningFirstTimePerDayProviderService(
+        public ILRFileSubmissionsPerDayProviderService(
             ILogger logger,
             IReportServiceConfiguration reportServiceConfiguration)
             : base(reportServiceConfiguration)
         {
         }
 
-        public override string StoredProcedure => "dbo.GetIlrProvidersReturningFirstTimePerDay";
+        public override string StoredProcedure => "dbo.GetILRSubmissionsPerDay";
     }
 }

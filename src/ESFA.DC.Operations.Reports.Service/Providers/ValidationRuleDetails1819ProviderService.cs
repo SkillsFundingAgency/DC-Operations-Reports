@@ -38,7 +38,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                     join fd in ilrContext.FileDetails
                         on ve.Source equals fd.Filename
                     where ve.RuleName == rule
-                    select new { ve.RuleName, ve.UKPRN, fd.SubmittedTime, ve.Severity} into x
+                    select new { ve.RuleName, ve.UKPRN, fd.SubmittedTime, ve.Severity } into x
                     group x by new { x.RuleName, x.UKPRN, x.SubmittedTime, x.Severity } into g
                     orderby g.Key.SubmittedTime descending
                     select new ValidationRuleDetail()

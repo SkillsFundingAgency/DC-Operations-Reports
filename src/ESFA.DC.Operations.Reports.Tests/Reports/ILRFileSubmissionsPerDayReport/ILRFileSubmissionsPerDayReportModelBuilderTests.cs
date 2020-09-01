@@ -5,14 +5,14 @@ using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
-using ESFA.DC.Operations.Reports.Reports.ILRProvidersReturningFirstTimePerDayReport;
+using ESFA.DC.Operations.Reports.Reports.ILRFileSubmissionPerDayReport;
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace ESFA.DC.Operations.Reports.Tests.Reports.ILRProvidersReturningFirstTimePerDayReport
+namespace ESFA.DC.Operations.Reports.Tests.Reports.ILRFileSubmissionsPerDayReport
 {
-    public class ILRProvidersReturningFirstTimePerDayReportModelBuilderTests
+    public class ILRFileSubmissionsPerDayReportModelBuilderTests
     {
         [Fact]
         public void BuildModelTest()
@@ -26,19 +26,19 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ILRProvidersReturningFirstTim
             reportServiceContextMock.SetupGet(x => x.Period).Returns(13);
             reportServiceContextMock.SetupGet(x => x.ReturnPeriodName).Returns("R13");
 
-            var providerServiceMock = new Mock<IILRProvidersReturningFirstTimePerDayProviderService>();
+            var providerServiceMock = new Mock<IILRFileSubmissionsPerDayProviderService>();
             providerServiceMock.Setup(x => x.GetSubmissionsPerDay(It.IsAny<int>(), It.IsAny<int>(), CancellationToken.None)).ReturnsAsync(BuildIlrReturns());
 
             var dateTimeProviderMock = new Mock<IDateTimeProvider>();
             dateTimeProviderMock.Setup(p => p.ConvertUtcToUk(submissionDateTime)).Returns(ukDateTime);
 
-            ILRProvidersReturningFirstTimePerDayReportModelBuilder modelBuilder = new ILRProvidersReturningFirstTimePerDayReportModelBuilder(providerServiceMock.Object, dateTimeProviderMock.Object);
+            var modelBuilder = new ILRFileSubmissionPerDayReportModelBuilder(providerServiceMock.Object, dateTimeProviderMock.Object);
 
             var result = modelBuilder.Build(reportServiceContextMock.Object, CancellationToken.None).Result;
 
             result.Period.Should().Be("R13");
-            result.ChartTitle.Should().Be("1920 ILR Providers Returning for the First Time Per Period (Log 2 Scale) - R13");
-            result.ReportTitle.Should().Be("1920 ILR Providers Returning for the First Time Per Period - 01 Jan 2020 01:01:01");
+            result.ChartTitle.Should().Be("1920 ILR File Submissions per Day per Period (Log 2 Scale) - R13");
+            result.ReportTitle.Should().Be("1920 ILR File Submissions per Day per Period - 01 Jan 2020 01:01:01");
             result.SubmissionsPerDayList.Count.Should().Be(5);
         }
 
@@ -73,17 +73,5 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.ILRProvidersReturningFirstTim
                 },
             };
         }
-
-        private IDictionary<int, OrgModel> BuildOrgModel()
-        {
-            return new Dictionary<int, OrgModel>()
-            {
-                { 123456789, new OrgModel {  Ukprn = 123456789, Name = "Provider 1" } },
-                { 987654321, new OrgModel {  Ukprn = 987654321, Name = "Provider 2" } },
-            };
-
-        }
-
-
     }
 }

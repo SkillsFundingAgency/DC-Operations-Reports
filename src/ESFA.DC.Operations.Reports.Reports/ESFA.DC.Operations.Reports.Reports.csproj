@@ -4,19 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
-  </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <None Remove="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <EmbeddedResource Include="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
 
