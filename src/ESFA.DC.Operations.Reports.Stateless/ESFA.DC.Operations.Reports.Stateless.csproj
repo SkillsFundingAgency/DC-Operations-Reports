@@ -115,6 +115,9 @@
     <Reference Include="ESFA.DC.FileService.Interface, Version=0.1.39.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ESFA.DC.FileService.Interface.0.1.39-beta0001\lib\netstandard2.0\ESFA.DC.FileService.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="ESFA.DC.FundingClaims.Data, Version=0.4.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ESFA.DC.FundingClaims.Data.0.4.5-beta.1\lib\netstandard2.0\ESFA.DC.FundingClaims.Data.dll</HintPath>
+    </Reference>
     <Reference Include="ESFA.DC.ILR.2021.Database.EF, Version=0.1.154.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ESFA.DC.ILR.2021.Database.EF.0.1.154\lib\netstandard2.0\ESFA.DC.ILR.2021.Database.EF.dll</HintPath>
     </Reference>
