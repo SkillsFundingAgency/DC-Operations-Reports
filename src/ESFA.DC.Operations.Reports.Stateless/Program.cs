@@ -11,6 +11,7 @@ using ESFA.DC.ExcelService.Interface;
 using ESFA.DC.JobContextManager.Interface;
 using ESFA.DC.JobContextManager.Model;
 using ESFA.DC.JobContextManager.Model.Interface;
+using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Stateless.Config;
 using ESFA.DC.ServiceFabric.Common.Config;
 using ESFA.DC.ServiceFabric.Common.Config.Interface;
@@ -43,6 +44,8 @@ namespace ESFA.DC.Operations.Reports.Stateless
 
                 using (var container = builder.Build())
                 {
+                    var fundingService = container.Resolve<IFundingClaimsProviderService>();
+
                     var excelFileService = container.Resolve<IExcelFileService>();
                     if (!string.IsNullOrEmpty(softwareLicenceSection.AsposeLicence))
                     {

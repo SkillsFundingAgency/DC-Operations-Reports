@@ -10,6 +10,10 @@ namespace ESFA.DC.Operations.Reports.Interface
 
         string IlrDataStore2021ConnectionString { get; }
 
+        string PimsDataConnectionString { get; }
+
+        string FundingClaimsConnectionString { get; }
+
         string JobManagementConnectionString { get; }
     }
 }

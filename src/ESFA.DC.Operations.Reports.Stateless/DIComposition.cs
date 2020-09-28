@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using ESFA.DC.FileService.Config;
+using ESFA.DC.FundingClaims.Data;
 using ESFA.DC.ILR1819.DataStore.EF;
 using ESFA.DC.ILR1819.DataStore.EF.Interface;
 using ESFA.DC.ILR1920.DataStore.EF;
@@ -39,6 +40,7 @@ namespace ESFA.DC.Operations.Reports.Stateless
             containerBuilder.RegisterType<ILR1920_DataStoreEntities>().As<IIlr1920RulebaseContext>();
             containerBuilder.RegisterType<ILR1819_DataStoreEntities>().As<IIlr1819RulebaseContext>();
             containerBuilder.RegisterType<PimsContext>().As<IPimsContext>();
+            containerBuilder.RegisterType<FundingClaimsDataContext>().As<IFundingClaimsDataContext>().ExternallyOwned();
             containerBuilder.RegisterInstance(reportServiceConfiguration).As<IReportServiceConfiguration>();
 
             containerBuilder.Register(context =>
@@ -88,6 +90,18 @@ namespace ESFA.DC.Operations.Reports.Stateless
                 })
                 .As<DbContextOptions<PimsContext>>()
                 .SingleInstance();
+
+            containerBuilder.Register(context =>
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<FundingClaimsDataContext>();
+                optionsBuilder.UseSqlServer(
+                    reportServiceConfiguration.FundingClaimsConnectionString,
+                    options => options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), new List<int>()));
+
+                return optionsBuilder.Options;
+            })
+               .As<DbContextOptions<FundingClaimsDataContext>>()
+               .SingleInstance();
 
             containerBuilder.RegisterModule(new StatelessBaseModule(statelessServiceConfiguration));
             containerBuilder.RegisterModule<SerializationModule>();

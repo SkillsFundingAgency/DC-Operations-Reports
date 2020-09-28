@@ -8,6 +8,8 @@ namespace ESFA.DC.Operations.Reports.Interface.Providers
 {
     public interface IFundingClaimsProviderService
     {
+        Task<CollectionDetail> GetLatestCollectionDetailAsync(int collectionYear, CancellationToken cancellationToken);
+
         Task<IEnumerable<FundingClaimsSubmission>> GetAllFundingClaimsSubmissionsByCollectionAsync(int collectionId, CancellationToken cancellationToken);
     }
 }

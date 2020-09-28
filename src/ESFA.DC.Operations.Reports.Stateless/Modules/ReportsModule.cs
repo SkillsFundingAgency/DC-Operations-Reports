@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Autofac;
 using ESFA.DC.Operations.Reports.Interface;
+using ESFA.DC.Operations.Reports.Interface.FundingClaims;
 using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport;
 using ESFA.DC.Operations.Reports.Reports.ILRFileSubmissionPerDayReport;
@@ -24,7 +25,9 @@ namespace ESFA.DC.Operations.Reports.Stateless.Modules
             containerBuilder.RegisterType<ValidationRuleDetailReportModelBuilder>().As<IModelBuilder<IEnumerable<ValidationRuleDetail>>>();
             containerBuilder.RegisterType<ILRProvidersReturningFirstTimePerDayReportModelBuilder>().As<IModelBuilder<ILRProvidersReturningFirstTimePerDayModel>>();
             containerBuilder.RegisterType<ILRFileSubmissionPerDayReportModelBuilder>().As<IModelBuilder<ILRFileSubmissionsPerDayModel>>();
-            containerBuilder.RegisterType<FundingClaimsProviderSubmissions1920ReportModelBuilder>().As<IModelBuilder<FundingClaimsSubmissionsModel>>();
+            containerBuilder.RegisterType<FundingClaimsProviderSubmissions1920ReportModelBuilder>().As<IFundingClaimsSubmissionsModelBuilder>();
+
+
         }
     }
 }

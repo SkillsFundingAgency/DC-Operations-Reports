@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ESFA.DC.Operations.Reports.Model.FundingClaims
 {
@@ -16,6 +15,10 @@ namespace ESFA.DC.Operations.Reports.Model.FundingClaims
 
         public bool IsSubmitted { get; set; }
 
-        public DateTime SubmittedDateTimeUtc { get; set; }
-    }
+        public DateTime? SubmittedDateTimeUtc { get; set; }
+
+        public ICollection<FundingClaimSubmissionsValue> SubmissionValues { get; set; }
+
+        public ICollection<FundingClaimSubmissionContractDetail> SubmissionContractDetails { get; set; }
+     }
 }

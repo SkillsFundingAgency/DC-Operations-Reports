@@ -2,7 +2,7 @@
 {
     public class FundingClaimsSubmissionsDetail
     {
-        public int UkPrn { get; set; }
+        public long UkPrn { get; set; }
 
         public string ProviderName { get; set; }
 
