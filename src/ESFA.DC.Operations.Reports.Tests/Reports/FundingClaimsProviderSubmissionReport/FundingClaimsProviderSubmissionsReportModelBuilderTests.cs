@@ -25,9 +25,9 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
             reportServiceContextMock.SetupGet(x => x.CollectionYear).Returns(1920);
             reportServiceContextMock.SetupGet(x => x.Period).Returns(13);
             reportServiceContextMock.SetupGet(x => x.ReturnPeriodName).Returns("R13");
-
+            
             var dateTimeProviderMock = new Mock<IDateTimeProvider>();
-            dateTimeProviderMock.Setup(p => p.GetNowUtc()).Returns(ukDateTime);
+            dateTimeProviderMock.Setup(p => p.ConvertUtcToUk(It.IsAny<DateTime>())).Returns(ukDateTime);
 
             var collectionDetail = new CollectionDetailBuilder().Build();
             var org1 = new OrganisationCollectionBuilder().With(x => x.Ukprn, 12345678).Build();
