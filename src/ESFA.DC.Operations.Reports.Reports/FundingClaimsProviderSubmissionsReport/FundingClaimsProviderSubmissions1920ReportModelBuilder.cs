@@ -42,7 +42,7 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
             var model = new FundingClaimsSubmissionsModel
             {
                 FundingClaim = collectionDetail.DisplayTitle,
-                ReportRun = _dateTimeProvider.GetNowUtc().LongDateStringFormat(),
+                ReportRun = _dateTimeProvider.ConvertUtcToUk(_dateTimeProvider.GetNowUtc()).LongDateStringFormat(),
                 TotalNoOfProviders = totalProviders,
                 NoOfProvidersExpectedToReturn = expectedUkprns.Count,
                 NoOfReturningExpectedProviders = expectedProvidersSubmitted.Count,
@@ -60,6 +60,7 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                     ExpectedToReturnInCurrentPeriod = IsExpectedToReturn(submission.Ukprn, expectedProviders),
                     ReturnedInCurrentPeriod = submission.IsSubmitted ? "Yes" : "No",
                     DateLatestClaimSubmitted = submission.SubmittedDateTimeUtc?.LongDateStringFormat(),
+                    CovidResponse = BuildCovidResponse(submission.CovidDeclaration)
                 };
 
                 detail.ALLBC1920ContractValue = GetContractValue(submission.SubmissionId, FundingStreamPeriodCodeConstants.ALLBC1920, submission.SubmissionContractDetails);
@@ -88,9 +89,10 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                 var detail = new FundingClaimsSubmissionsDetail
                 {
                     UkPrn = provider.Ukprn,
-                    ProviderName = orgDetails.GetValueOrDefault((int)provider.Ukprn)?.Name,
+                    ProviderName = orgDetails.GetValueOrDefault(provider.Ukprn)?.Name,
                     ExpectedToReturnInCurrentPeriod = "Yes",
                     ReturnedInCurrentPeriod = "No",
+                    CovidResponse = "N/A",
                 };
 
                 submissionsDetails.Add(detail);
@@ -98,6 +100,16 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
 
             model.FundingClaimsSubmissionsDetails = submissionsDetails.OrderBy(x => x.ProviderName).ToList();
             return model;
+        }
+
+        public string BuildCovidResponse(bool? covidDeclaration)
+        {
+            if (covidDeclaration == null)
+            {
+                return "N/A";
+            }
+
+            return covidDeclaration.GetValueOrDefault() ? "Yes" : "No";
         }
 
         public decimal GetClaimedValue(Guid submissionId, string fundingStreamPeriodCode, ICollection<FundingClaimSubmissionsValue> submissionSubmissionValues)

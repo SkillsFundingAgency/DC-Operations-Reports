@@ -20,5 +20,7 @@ namespace ESFA.DC.Operations.Reports.Interface.FundingClaims
         decimal GetContractValue(Guid submissionId, string fundingStreamPeriodCode, ICollection<FundingClaimSubmissionContractDetail> contractDetails);
 
         string IsExpectedToReturn(long ukprn, List<OrganisationCollection> expectedProviders);
+
+        string BuildCovidResponse(bool? covidDeclaration);
     }
 }

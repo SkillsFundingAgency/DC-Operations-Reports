@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using ESFA.DC.FundingClaims.Data;
 using ESFA.DC.Logging.Interfaces;
+using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +17,39 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
     public class FundingClaimsProviderService : IFundingClaimsProviderService
     {
         private readonly Func<IFundingClaimsDataContext> _fundingClaimsContextFactory;
+        private readonly IReportServiceConfiguration _reportServiceConfiguration;
         private readonly ILogger _logger;
+
+        private readonly string fundingClaimsSubmissionsSql = @"SELECT 
+                                                                        a.SubmissionId,
+                                                                        a.Ukprn,
+                                                                        a.SubmittedDateTimeUtc,
+                                                                        a.Version,
+                                                                        a.CollectionId,
+                                                                        a.IsSubmitted,
+                                                                        a.CovidDeclaration,
+                                                                        sv.Id as SubmissionValueId,
+                                                                        sv.SubmissionId AS SubmissionValueSubmissionId,
+                                                                        sv.TotalDelivery,
+                                                                        sv.ContractAllocationNumber,
+                                                                        sv.FundingStreamPeriodCode AS SubmissionValueFundingStreamPeriodCode,
+                                                                        scd.Id as SubmissionContractDetailId,
+                                                                        scd.SubmissionId AS SubmissionContractSubmissionId ,
+                                                                        scd.FundingStreamPeriodCode AS SubmissionContractFundingStreamPeriodCode,
+                                                                        scd.ContractValue
+                                                                    FROM submission a 
+                                                                        LEFT OUTER JOIN submissionvalue sv ON sv.submissionid  = a.SubmissionId
+                                                                        LEFT OUTER JOIN SubmissionContractDetail scd ON scd.SubmissionId = a.SubmissionId
+                                                                    WHERE CollectionId = @collectionId
+                                                                                AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId )";
 
         public FundingClaimsProviderService(
             Func<IFundingClaimsDataContext> fundingClaimsContextFactory,
+            IReportServiceConfiguration reportServiceConfiguration,
             ILogger logger)
         {
             _fundingClaimsContextFactory = fundingClaimsContextFactory;
+            _reportServiceConfiguration = reportServiceConfiguration;
             _logger = logger;
         }
 
@@ -54,65 +82,53 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
 
         public async Task<IEnumerable<FundingClaimsSubmission>> GetAllFundingClaimsSubmissionsByCollectionAsync(int collectionId, CancellationToken cancellationToken)
         {
-            var items = new List<FundingClaimsSubmission>();
-
+            var model = new List<FundingClaimsSubmission>();
+            IEnumerable<FundingClaimsSubmissionResultSet> result = new List<FundingClaimsSubmissionResultSet>();
             try
             {
-                using (IFundingClaimsDataContext context = _fundingClaimsContextFactory())
+                using (var connection = new SqlConnection(_reportServiceConfiguration.FundingClaimsConnectionString))
                 {
-                   items = await (from s in context.Submission
-                                     let version = (from d in context.Submission
-                                                    where d.CollectionId == collectionId && s.Ukprn == d.Ukprn
-                            select d.Version).Max()
-                        where s.Version == version && s.CollectionId == collectionId
-                        select new FundingClaimsSubmission
-                        {
-                            SubmissionId = s.SubmissionId,
-                            Ukprn = s.Ukprn,
-                            SubmittedDateTimeUtc = s.SubmittedDateTimeUtc,
-                            Version = s.Version,
-                            CollectionId = s.CollectionId,
-                            IsSubmitted = s.IsSubmitted,
-                            SubmissionValues = s.SubmissionValue.Select(sv => new FundingClaimSubmissionsValue()
-                            {
-                                SubmissionId = sv.SubmissionId,
-                                TotalDelivery = sv.TotalDelivery,
-                                ContractAllocationNumber = sv.ContractAllocationNumber,
-                                FundingStreamPeriodCode = sv.FundingStreamPeriodCode,
-                            }).ToList(),
-                            SubmissionContractDetails = s.SubmissionContractDetail.Select(sc => new FundingClaimSubmissionContractDetail()
-                            {
-                                SubmissionId = sc.SubmissionId,
-                                FundingStreamPeriodCode = sc.FundingStreamPeriodCode,
-                                ContractValue = sc.ContractValue,
-                            }).ToList(),
-                        }).ToListAsync(cancellationToken);
+                    await connection.OpenAsync();
+                    result = await connection.QueryAsync<FundingClaimsSubmissionResultSet>(fundingClaimsSubmissionsSql, new { collectionId });
+                }
 
-                    //var items1 = await context.Submission
-                    //    .Where(x => x.CollectionId == collectionId &&
-                    //                x.Version == context.Submission.Where(s => s.Ukprn == x.Ukprn
-                    //                                                           && x.CollectionId == collectionId).Max(s => s.Version))
-                    //    .Select(x => new FundingClaimsSubmission()
-                    //     {
-                    //         SubmissionId = x.SubmissionId,
-                    //         Ukprn = x.Ukprn,
-                    //         SubmittedDateTimeUtc = x.SubmittedDateTimeUtc.GetValueOrDefault(),
-                    //         Version = x.Version,
-                    //         CollectionId = x.CollectionId,
-                    //         IsSubmitted = x.IsSubmitted,
-                    //         SubmissionValues = x.SubmissionValue.Select( sv => new FundingClaimSubmissionsValue(){
-                    //             SubmissionId = sv.SubmissionId,
-                    //             TotalDelivery = sv.TotalDelivery,
-                    //             ContractAllocationNumber =  sv.ContractAllocationNumber,
-                    //             FundingStreamPeriodCode = sv.FundingStreamPeriodCode
-                    //                        }).ToList(),
-                    //         SubmissionContractDetails = x.SubmissionContractDetail.Select(sc => new FundingClaimSubmissionContractDetail()
-                    //         {
-                    //             SubmissionId = sc.SubmissionId,
-                    //             FundingStreamPeriodCode = sc.FundingStreamPeriodCode,
-                    //             ContractValue = sc.ContractValue
-                    //         }).ToList(),
-                    //     }).ToListAsync(cancellationToken);
+                var fundingClaimsSubmissions = result
+                    .GroupBy(r => new { r.Version, r.SubmissionId, r.Ukprn, r.CollectionId, r.IsSubmitted, r.SubmittedDateTimeUtc, r.CovidDeclaration })
+                    .Select(x => new FundingClaimsSubmission()
+                    {
+                        Version = x.Key.Version,
+                        SubmissionId = x.Key.SubmissionId,
+                        Ukprn = x.Key.Ukprn,
+                        CollectionId = x.Key.CollectionId,
+                        IsSubmitted = x.Key.IsSubmitted,
+                        SubmittedDateTimeUtc = x.Key.SubmittedDateTimeUtc,
+                        CovidDeclaration = x.Key.CovidDeclaration
+                    }).Distinct().ToList();
+
+                var fundingClaimsSubmissionValues = result
+                    .GroupBy(r => new { r.SubmissionValueId, r.SubmissionValueSubmissionId, r.SubmissionValueFundingStreamPeriodCode, r.TotalDelivery, r.ContractAllocationNumber })
+                    .Select(x => new FundingClaimSubmissionsValue()
+                    {
+                        SubmissionId = x.Key.SubmissionValueSubmissionId,
+                        FundingStreamPeriodCode = x.Key.SubmissionValueFundingStreamPeriodCode,
+                        TotalDelivery = x.Key.TotalDelivery,
+                        ContractAllocationNumber = x.Key.ContractAllocationNumber
+                    }).Distinct().ToList();
+
+                var fundingClaimsSubmissionContractDetails = result
+                    .GroupBy(r => new { r.SubmissionContractDetailId, r.SubmissionContractSubmissionId, r.SubmissionContractFundingStreamPeriodCode, r.ContractValue })
+                    .Select(x => new FundingClaimSubmissionContractDetail()
+                    {
+                        SubmissionId = x.Key.SubmissionContractSubmissionId,
+                        FundingStreamPeriodCode = x.Key.SubmissionContractFundingStreamPeriodCode,
+                        ContractValue = x.Key.ContractValue
+                    }).Distinct().ToList();
+
+                foreach (var submission in fundingClaimsSubmissions)
+                {
+                    submission.SubmissionValues = fundingClaimsSubmissionValues.Where(x => x.SubmissionId == submission.SubmissionId).ToList();
+                    submission.SubmissionContractDetails = fundingClaimsSubmissionContractDetails.Where(x => x.SubmissionId == submission.SubmissionId).ToList();
+                    model.Add(submission);
                 }
             }
             catch (Exception e)
@@ -123,7 +139,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
 
             _logger.LogInfo($"return submissions for collectionId : {collectionId}");
 
-            return items;
+            return model;
         }
     }
 }

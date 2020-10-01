@@ -171,6 +171,16 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
             NewBuilder().IsExpectedToReturn(99999999, expectedProviders).Should().Be("Yes");
         }
 
+
+         [Theory]
+         [InlineData(null, "N/A")]
+         [InlineData(true, "Yes")]
+         [InlineData(false, "No")]
+        public void BuildCovidResponse_Returns_ExpectedValue(bool? covidDeclaration, string expectedValue)
+        {
+            NewBuilder().BuildCovidResponse(covidDeclaration).Should().Be(expectedValue);
+        }
+
         private FundingClaimsProviderSubmissions1920ReportModelBuilder NewBuilder(
            IDateTimeProvider dateTimeProvider = null)
         {

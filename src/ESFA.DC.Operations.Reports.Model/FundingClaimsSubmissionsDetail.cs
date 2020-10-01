@@ -6,6 +6,8 @@
 
         public string ProviderName { get; set; }
 
+        public string CovidResponse { get; set; }
+
         public string ExpectedToReturnInCurrentPeriod { get; set; }
 
         public string ReturnedInCurrentPeriod { get; set; }

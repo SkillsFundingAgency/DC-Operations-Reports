@@ -15,6 +15,8 @@ namespace ESFA.DC.Operations.Reports.Model.FundingClaims
 
         public bool IsSubmitted { get; set; }
 
+        public bool? CovidDeclaration { get; set; }
+
         public DateTime? SubmittedDateTimeUtc { get; set; }
 
         public ICollection<FundingClaimSubmissionsValue> SubmissionValues { get; set; }
