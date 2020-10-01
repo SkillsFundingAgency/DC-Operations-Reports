@@ -19,8 +19,8 @@ namespace ESFA.DC.Operations.Reports.Service.Tests
             NewService().GetExtension(outputType).Should().Be(extension);
         }
 
-        [InlineData(1920,"R13", "1920/R13/")]
-        [InlineData(2021,"R01", "2021/R01/")]
+        [InlineData(1920, "R13", "1920/R13/")]
+        [InlineData(2021, "R01", "2021/R01/")]
         [Theory]
         public void GetPrefix_MeetsExpectation(int collectionYear, string period, string expected)
         {
@@ -52,6 +52,7 @@ namespace ESFA.DC.Operations.Reports.Service.Tests
             var result = NewService(dateTimeProviderMock.Object).Generate(reportServiceContextMock.Object, "reportname", OutputTypes.Csv, includeDateTime: true, includeYearPeriodAndShortCode: true, includeJobId: true);
             result.Should().Be("Reports/1234/1920/R13/reportname 20200101-010101.csv");
         }
+
         private FileNameService NewService(IDateTimeProvider dateTimeProvider = null)
         {
             return new FileNameService(dateTimeProvider);

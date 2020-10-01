@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ESFA.DC.CsvService.Interface;
 using ESFA.DC.ExcelService.Interface;
 using ESFA.DC.FileService.Interface;
 using ESFA.DC.Operations.Reports.Interface;
@@ -61,16 +60,17 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
             var expectedProviders = await _organisationCollectionProviderService.GetOrganisationCollectionsByCollectionIdAsync(collection.CollectionId, cancellationToken);
             var fundingClaimsSubmissions = await _fundingClaimsProviderService.GetAllFundingClaimsSubmissionsByCollectionAsync(collection.CollectionId, cancellationToken);
 
-            var organisationCollections = expectedProviders.ToList();
-            var expectedUkprns = organisationCollections.Select(x => (long)x.Ukprn);
+            var expectedProvidersList = expectedProviders.ToList();
+            var fundingClaimsSubmissionsList = fundingClaimsSubmissions.ToList();
 
-            var fundingClaimsSubmissionsUkprns = fundingClaimsSubmissions.Select(x => x.Ukprn);
+            var expectedUkprns = expectedProvidersList.Select(x => (long)x.Ukprn);
+            var fundingClaimsSubmissionsUkprns = fundingClaimsSubmissionsList.Select(x => x.Ukprn);
             var ukprns = expectedUkprns.Union(fundingClaimsSubmissionsUkprns);
 
             IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
 
-            var fundingClaimsSubmissionsModel = await _modelBuilder.Build(collection, organisationCollections, fundingClaimsSubmissions, orgDetails, cancellationToken);
-            var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, true, false);
+            var fundingClaimsSubmissionsModel = _modelBuilder.Build(collection, expectedProvidersList, fundingClaimsSubmissionsList, orgDetails, cancellationToken);
+            var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, false, false);
 
             await GenerateWorkBookAsync(fundingClaimsSubmissionsModel, TemplateName, ReportDataSource, reportServiceContext, reportFileName, cancellationToken);
             return new[] { reportFileName };

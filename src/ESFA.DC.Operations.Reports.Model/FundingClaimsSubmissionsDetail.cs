@@ -12,10 +12,8 @@
 
         public string DateLatestClaimSubmitted { get; set; }
 
-        public string CanEditClaimILRFigures { get; set; }
-
         public decimal ALLBC1920ContractValue { get; set; }
-        
+
         public decimal ALLBC1920Claimed { get; set; }
 
         public decimal AEBCASCL1920ContractValue { get; set; }
