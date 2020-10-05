@@ -11,6 +11,8 @@ namespace ESFA.DC.Operations.Reports.Stateless.Config
         public string IlrDataStore2021ConnectionString { get; set; }
 
         public string PimsDataConnectionString { get; set; }
+        
+        public string FundingClaimsConnectionString { get; set; }
 
         public string JobManagementConnectionString { get; set; }
     }

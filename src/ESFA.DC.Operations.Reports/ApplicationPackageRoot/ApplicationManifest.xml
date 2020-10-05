@@ -20,6 +20,7 @@
     <Parameter Name="IlrDataStore2021ConnectionString" DefaultValue="" />
     <Parameter Name="JobManagementConnectionString" DefaultValue="" />
     <Parameter Name="PimsDataConnectionString" DefaultValue="" />
+    <Parameter Name="FundingClaimsConnectionString" DefaultValue="" />
     <Parameter Name="AsposeLicence" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
@@ -47,6 +48,7 @@
             <Parameter Name="IlrDataStore1920ConnectionString" Value="[IlrDataStore1920ConnectionString]" />
             <Parameter Name="IlrDataStore2021ConnectionString" Value="[IlrDataStore2021ConnectionString]" />
             <Parameter Name="PimsDataConnectionString" Value="[PimsDataConnectionString]" />
+            <Parameter Name="FundingClaimsConnectionString" Value="[FundingClaimsConnectionString]" />
             <Parameter Name="JobManagementConnectionString" Value="[JobManagementConnectionString]" />
           </Section>
           <Section Name="AzureStorageFileServiceConfiguration">

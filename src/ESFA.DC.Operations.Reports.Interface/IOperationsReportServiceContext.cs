@@ -31,6 +31,5 @@ namespace ESFA.DC.Operations.Reports.Interface
         IEnumerable<ReturnPeriod> SelectedILRPeriodsAdjustedTimes { get; }
 
         string ReturnPeriodName { get; }
-
     }
 }

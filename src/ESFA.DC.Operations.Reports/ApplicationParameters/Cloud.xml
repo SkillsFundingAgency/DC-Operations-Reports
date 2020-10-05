@@ -20,6 +20,7 @@
     <Parameter Name="IlrDataStore2021ConnectionString" Value="__Ilr2021DataStoreConnectionString__" />
     <Parameter Name="JobManagementConnectionString" Value="__JobManagementConnectionString__" />
     <Parameter Name="PimsDataConnectionString" Value="__PimsDataConnectionString__" />
+    <Parameter Name="FundingClaimsConnectionString" Value="__FundingClaimsConnectionString__" />
     <Parameter Name="AsposeLicence" Value="__AsposeCellsLicence__" />
   </Parameters>
 </Application>

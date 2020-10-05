@@ -24,6 +24,8 @@ namespace ESFA.DC.Operations.Reports.Stateless.Modules
             containerBuilder.RegisterType<ILRFileSubmissionsPerDayProviderService>().As<IILRFileSubmissionsPerDayProviderService>();
 
             containerBuilder.RegisterType<OrgProviderService>().As<IOrgProviderService>();
+            containerBuilder.RegisterType<OrganisationCollectionProviderService>().As<IOrganisationCollectionProviderService>();
+            containerBuilder.RegisterType<FundingClaimsProviderService>().As<IFundingClaimsProviderService>();
         }
     }
 }

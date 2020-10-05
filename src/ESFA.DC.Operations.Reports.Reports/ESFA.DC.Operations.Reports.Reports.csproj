@@ -2,14 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\ESFA.DC.Operations.Reports.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\FundingClaimsProviderSubmissionsReport1920Template.xlsx" />
     <None Remove="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <None Remove="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
@@ -38,6 +35,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\FundingClaimsProviderSubmissionsReport1920Template.xlsx" />
   </ItemGroup>
 
 </Project>
