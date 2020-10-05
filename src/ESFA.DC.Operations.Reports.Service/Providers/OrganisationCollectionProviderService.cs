@@ -26,7 +26,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             _reportServiceConfiguration = reportServiceConfiguration;
         }
 
-        public async Task<IEnumerable<OrganisationCollection>> GetOrganisationCollectionsByCollectionIdAsync(int collectionId, CancellationToken cancellationToken)
+        public async Task<ICollection<OrganisationCollection>> GetOrganisationCollectionsByCollectionIdAsync(int collectionId, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnection(_reportServiceConfiguration.JobManagementConnectionString))
             {

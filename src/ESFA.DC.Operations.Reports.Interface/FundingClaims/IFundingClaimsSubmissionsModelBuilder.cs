@@ -10,8 +10,8 @@ namespace ESFA.DC.Operations.Reports.Interface.FundingClaims
     {
         FundingClaimsSubmissionsModel Build(
                                             CollectionDetail collectionDetail,
-                                            List<OrganisationCollection> expectedProviders,
-                                            List<FundingClaimsSubmission> fundingClaimsSubmissions,
+                                            ICollection<OrganisationCollection> expectedProviders,
+                                            ICollection<FundingClaimsSubmission> fundingClaimsSubmissions,
                                             IDictionary<int, OrgModel> orgDetails,
                                             CancellationToken cancellationToken);
 
@@ -19,7 +19,7 @@ namespace ESFA.DC.Operations.Reports.Interface.FundingClaims
 
         decimal GetContractValue(Guid submissionId, string fundingStreamPeriodCode, ICollection<FundingClaimSubmissionContractDetail> contractDetails);
 
-        string IsExpectedToReturn(long ukprn, List<OrganisationCollection> expectedProviders);
+        string IsExpectedToReturn(long ukprn, ICollection<OrganisationCollection> expectedProviders);
 
         string BuildCovidResponse(bool? covidDeclaration);
     }

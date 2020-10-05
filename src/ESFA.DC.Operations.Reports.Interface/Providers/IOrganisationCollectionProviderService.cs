@@ -9,6 +9,6 @@ namespace ESFA.DC.Operations.Reports.Interface.Providers
 {
     public interface IOrganisationCollectionProviderService
     {
-        Task<IEnumerable<OrganisationCollection>> GetOrganisationCollectionsByCollectionIdAsync(int collectionId, CancellationToken cancellationToken);
+        Task<ICollection<OrganisationCollection>> GetOrganisationCollectionsByCollectionIdAsync(int collectionId, CancellationToken cancellationToken);
     }
 }

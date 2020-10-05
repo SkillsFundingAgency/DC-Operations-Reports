@@ -44,8 +44,6 @@ namespace ESFA.DC.Operations.Reports.Stateless
 
                 using (var container = builder.Build())
                 {
-                    var fundingService = container.Resolve<IFundingClaimsProviderService>();
-
                     var excelFileService = container.Resolve<IExcelFileService>();
                     if (!string.IsNullOrEmpty(softwareLicenceSection.AsposeLicence))
                     {

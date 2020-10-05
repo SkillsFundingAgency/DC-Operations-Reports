@@ -80,7 +80,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             }
         }
 
-        public async Task<IEnumerable<FundingClaimsSubmission>> GetAllFundingClaimsSubmissionsByCollectionAsync(int collectionId, CancellationToken cancellationToken)
+        public async Task<ICollection<FundingClaimsSubmission>> GetAllFundingClaimsSubmissionsByCollectionAsync(int collectionId, CancellationToken cancellationToken)
         {
             var model = new List<FundingClaimsSubmission>();
             IEnumerable<FundingClaimsSubmissionResultSet> result = new List<FundingClaimsSubmissionResultSet>();

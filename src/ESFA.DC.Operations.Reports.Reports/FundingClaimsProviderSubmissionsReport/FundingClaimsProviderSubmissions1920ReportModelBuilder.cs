@@ -26,8 +26,8 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
 
         public FundingClaimsSubmissionsModel Build(
             CollectionDetail collectionDetail,
-            List<OrganisationCollection> expectedProviders,
-            List<FundingClaimsSubmission> fundingClaimsSubmissions,
+            ICollection<OrganisationCollection> expectedProviders,
+            ICollection<FundingClaimsSubmission> fundingClaimsSubmissions,
             IDictionary<int, OrgModel> orgDetails,
             CancellationToken cancellationToken)
         {
@@ -124,7 +124,7 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
             return result;
         }
 
-        public string IsExpectedToReturn(long ukprn, List<OrganisationCollection> expectedProviders)
+        public string IsExpectedToReturn(long ukprn, ICollection<OrganisationCollection> expectedProviders)
         {
             return expectedProviders.Any(x => x.Ukprn == ukprn) ? "Yes" : "No";
         }
