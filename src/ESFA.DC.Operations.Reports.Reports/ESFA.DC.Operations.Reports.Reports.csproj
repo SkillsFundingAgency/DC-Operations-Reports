@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\FundingClaimsDataExtractReport1920Template.xlsx" />
     <None Remove="Templates\FundingClaimsProviderSubmissionsReport1920Template.xlsx" />
     <None Remove="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <None Remove="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Templates\FundingClaimsDataExtractReport1920Template.xlsx" />
     <EmbeddedResource Include="Templates\ILRFileSubmissionPerDayReport.xlsx" />
     <EmbeddedResource Include="Templates\ILRProvidersReturningFirstTimePerDayTemplate.xlsx" />
   </ItemGroup>
