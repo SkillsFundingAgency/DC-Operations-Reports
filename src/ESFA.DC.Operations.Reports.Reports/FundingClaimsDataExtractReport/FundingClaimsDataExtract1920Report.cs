@@ -5,44 +5,33 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.ExcelService.Interface;
-using ESFA.DC.FileService.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.FundingClaims;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Reports.Abstract;
 using ESFA.DC.Operations.Reports.Reports.Constants;
-using ESFA.DC.Serialization.Interfaces;
 
 namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport
 {
     public class FundingClaimsDataExtract1920Report : AbstractReport, IReport
     {
-        private readonly IFileService _fileService;
-        private readonly IJsonSerializationService _serializationService;
         private readonly IExcelFileService _excelFileService;
         private readonly IFileNameService _fileNameService;
-        private readonly IOrganisationCollectionProviderService _organisationCollectionProviderService;
         private readonly IFundingClaimsProviderService _fundingClaimsProviderService;
         private readonly IOrgProviderService _orgProviderService;
         private readonly IFundingClaimsDataExtractModelBuilder _modelBuilder;
 
         public FundingClaimsDataExtract1920Report(
-            IFileService fileService,
-            IJsonSerializationService serializationService,
             IExcelFileService excelFileService,
             IFileNameService fileNameService,
-            IOrganisationCollectionProviderService organisationCollectionProviderService,
             IFundingClaimsProviderService fundingClaimsProviderService,
             IOrgProviderService orgProviderService,
             IFundingClaimsDataExtractModelBuilder modelBuilder)
             : base(ReportTaskNameConstants.FundingClaimsDataExtractReport1920, "1920 Funding Claims Data")
         {
-            _fileService = fileService;
-            _serializationService = serializationService;
             _excelFileService = excelFileService;
             _fileNameService = fileNameService;
-            _organisationCollectionProviderService = organisationCollectionProviderService;
             _fundingClaimsProviderService = fundingClaimsProviderService;
             _orgProviderService = orgProviderService;
             _modelBuilder = modelBuilder;
