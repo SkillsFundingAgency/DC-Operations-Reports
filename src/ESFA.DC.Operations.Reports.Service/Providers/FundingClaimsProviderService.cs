@@ -45,7 +45,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                                                                     LEFT OUTER JOIN SubmissionContractDetail scd ON scd.SubmissionId = sv.SubmissionId and scd.FundingStreamPeriodCode = sv.FundingStreamPeriodCode
 	                                                                LEFT OUTER JOIN FundingStreamPeriodDeliverableCode fspdc ON sv.DeliverableCodeId = fspdc.Id
                                                                 WHERE CollectionId = @collectionId
-                                                                            AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId )";
+                                                                           AND a.IsSubmitted = 1";
 
         private readonly string fundingClaimsSubmissionsSql = @"SELECT 
                                                                         a.SubmissionId,
@@ -68,7 +68,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                                                                         LEFT OUTER JOIN submissionvalue sv ON sv.submissionid  = a.SubmissionId
                                                                         LEFT OUTER JOIN SubmissionContractDetail scd ON scd.SubmissionId = a.SubmissionId
                                                                     WHERE CollectionId = @collectionId
-                                                                                AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId )";
+                                                                                AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId AND b.IsSubmitted = 1)";
 
         public FundingClaimsProviderService(
             Func<IFundingClaimsDataContext> fundingClaimsContextFactory,

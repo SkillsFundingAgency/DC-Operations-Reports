@@ -48,15 +48,6 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                     })
                 .ToList();
 
-            //model.FundingClaimsDataExtract = fundingClaimsDataExtractDetails.OrderBy(x => new
-            //{
-            //    x.ProviderName,
-            //    x.CollectionPeriod,
-            //    x.SubmissionId,
-            //    x.FundingStreamPeriodCode,
-            //    x.DeliverableCode
-            //}).ToList();
-
             model.FundingClaimsDataExtract = fundingClaimsDataExtractDetails.OrderBy(x => x.ProviderName)
                 .ThenBy(x => x.CollectionPeriod)
                 .ThenBy(x => x.SubmissionId)

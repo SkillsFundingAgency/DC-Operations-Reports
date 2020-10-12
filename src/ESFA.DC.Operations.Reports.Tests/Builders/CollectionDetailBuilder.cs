@@ -1,6 +1,6 @@
 ﻿using ESFA.DC.Operations.Reports.Model.FundingClaims;
 
-namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissionReport.Builders
+namespace ESFA.DC.Operations.Reports.Tests.Builders
 {
     public class CollectionDetailBuilder : AbstractBuilder<CollectionDetail>
     {
@@ -11,6 +11,8 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
         public const string CollectionName = "Funding Claims 1920 Final";
 
         public const string DisplayTitle = "Funding Claims Display Title";
+        
+        public const string CollectionCode = "FC03";
 
         public CollectionDetailBuilder()
         {
@@ -20,6 +22,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
                CollectionYear = CollectionYear,
                CollectionName = CollectionName,
                DisplayTitle = DisplayTitle,
+               CollectionCode = CollectionCode
             };
         }
     }

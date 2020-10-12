@@ -7,6 +7,7 @@ using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
 using ESFA.DC.Operations.Reports.Reports.Constants;
 using ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport;
+using ESFA.DC.Operations.Reports.Tests.Builders;
 using ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissionReport.Builders;
 using FluentAssertions;
 using Moq;

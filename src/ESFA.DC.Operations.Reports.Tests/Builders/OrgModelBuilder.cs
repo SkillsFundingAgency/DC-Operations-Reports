@@ -1,6 +1,6 @@
 ﻿using ESFA.DC.Operations.Reports.Model;
 
-namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissionReport.Builders
+namespace ESFA.DC.Operations.Reports.Tests.Builders
 {
     public class OrgModelBuilder : AbstractBuilder<OrgModel>
     {
