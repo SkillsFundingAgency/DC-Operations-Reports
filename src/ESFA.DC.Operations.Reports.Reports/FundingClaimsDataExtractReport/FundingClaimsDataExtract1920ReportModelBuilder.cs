@@ -46,14 +46,14 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                         TotalDelivery = fundingClaim.TotalDelivery,
                         ContractAllocationNumber = fundingClaim.ContractAllocationNumber
                     })
-                .ToList();
-
-            model.FundingClaimsDataExtract = fundingClaimsDataExtractDetails.OrderBy(x => x.ProviderName)
+                .OrderBy(x => x.ProviderName)
                 .ThenBy(x => x.CollectionPeriod)
                 .ThenBy(x => x.SubmissionId)
                 .ThenBy(x => x.FundingStreamPeriodCode)
                 .ThenBy(x => x.DeliverableCode)
                 .ToList();
+
+            model.FundingClaimsDataExtract = fundingClaimsDataExtractDetails;
 
             return model;
         }

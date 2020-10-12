@@ -47,9 +47,9 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport
         {
             var collection = await _fundingClaimsProviderService.GetLatestCollectionDetailAsync(CollectionYear, cancellationToken);
             var fundingClaimsDataExtract = await _fundingClaimsProviderService.GetFundingClaimsDataExtractAsync(collection.CollectionId, cancellationToken);
-            var fundingClaimsSubmissionsUkprns = fundingClaimsDataExtract.Select(x => x.Ukprn);
+            var fundingClaimsSubmissionsUkprns = fundingClaimsDataExtract.Select(x => x.Ukprn).Distinct().ToList();
 
-            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(fundingClaimsSubmissionsUkprns.Distinct().ToList(), CancellationToken.None);
+            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(fundingClaimsSubmissionsUkprns, cancellationToken);
 
             var fundingClaimsDataExtractReportModel = _modelBuilder.Build(collection, fundingClaimsDataExtract, orgDetails, cancellationToken);
             var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, false, false);

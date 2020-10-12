@@ -67,7 +67,7 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
             var fundingClaimsSubmissionsUkprns = fundingClaimsSubmissionsList.Select(x => x.Ukprn);
             var ukprns = expectedUkprns.Union(fundingClaimsSubmissionsUkprns);
 
-            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), CancellationToken.None);
+            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), cancellationToken);
 
             var fundingClaimsSubmissionsModel = _modelBuilder.Build(collection, expectedProvidersList, fundingClaimsSubmissionsList, orgDetails, cancellationToken);
             var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, false, false);
