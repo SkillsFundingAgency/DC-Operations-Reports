@@ -5,79 +5,61 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.ExcelService.Interface;
-using ESFA.DC.FileService.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.FundingClaims;
 using ESFA.DC.Operations.Reports.Interface.Providers;
 using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Reports.Abstract;
 using ESFA.DC.Operations.Reports.Reports.Constants;
-using ESFA.DC.Serialization.Interfaces;
 
-namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport
+namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport
 {
-    public class FundingClaimsProviderSubmissions1920Report : AbstractReport, IReport
+    public class FundingClaimsDataExtract1920Report : AbstractReport, IReport
     {
-        private readonly IFileService _fileService;
-        private readonly IJsonSerializationService _serializationService;
         private readonly IExcelFileService _excelFileService;
         private readonly IFileNameService _fileNameService;
-        private readonly IOrganisationCollectionProviderService _organisationCollectionProviderService;
         private readonly IFundingClaimsProviderService _fundingClaimsProviderService;
         private readonly IOrgProviderService _orgProviderService;
-        private readonly IFundingClaimsSubmissionsModelBuilder _modelBuilder;
+        private readonly IFundingClaimsDataExtractModelBuilder _modelBuilder;
 
-        public FundingClaimsProviderSubmissions1920Report(
-            IFileService fileService,
-            IJsonSerializationService serializationService,
+        public FundingClaimsDataExtract1920Report(
             IExcelFileService excelFileService,
             IFileNameService fileNameService,
-            IOrganisationCollectionProviderService organisationCollectionProviderService,
             IFundingClaimsProviderService fundingClaimsProviderService,
             IOrgProviderService orgProviderService,
-            IFundingClaimsSubmissionsModelBuilder modelBuilder)
-            : base(ReportTaskNameConstants.FundingClaimsProviderSubmissionsReport1920, "1920 Funding Claims Provider Submissions Report")
+            IFundingClaimsDataExtractModelBuilder modelBuilder)
+            : base(ReportTaskNameConstants.FundingClaimsDataExtractReport1920, "1920 Funding Claims Data")
         {
-            _fileService = fileService;
-            _serializationService = serializationService;
             _excelFileService = excelFileService;
             _fileNameService = fileNameService;
-            _organisationCollectionProviderService = organisationCollectionProviderService;
             _fundingClaimsProviderService = fundingClaimsProviderService;
             _orgProviderService = orgProviderService;
             _modelBuilder = modelBuilder;
         }
 
-        private string TemplateName => "FundingClaimsProviderSubmissionsReport1920Template.xlsx";
+        private string TemplateName => "FundingClaimsDataExtractReport1920Template.xlsx";
 
-        private string ReportDataSource => "FundingClaimsInfo";
+        private string ReportDataSource => "FundingClaimDataExtractInfo";
 
         private int CollectionYear => 1920;
 
         public async Task<IEnumerable<string>> GenerateAsync(IOperationsReportServiceContext reportServiceContext, CancellationToken cancellationToken)
         {
             var collection = await _fundingClaimsProviderService.GetLatestCollectionDetailAsync(CollectionYear, cancellationToken);
-            var expectedProviders = await _organisationCollectionProviderService.GetOrganisationCollectionsByCollectionIdAsync(collection.CollectionId, cancellationToken);
-            var fundingClaimsSubmissions = await _fundingClaimsProviderService.GetAllFundingClaimsSubmissionsByCollectionAsync(collection.CollectionId, cancellationToken);
+            var fundingClaimsDataExtract = await _fundingClaimsProviderService.GetFundingClaimsDataExtractAsync(collection.CollectionId, cancellationToken);
+            var fundingClaimsSubmissionsUkprns = fundingClaimsDataExtract.Select(x => x.Ukprn).Distinct().ToList();
 
-            var expectedProvidersList = expectedProviders.ToList();
-            var fundingClaimsSubmissionsList = fundingClaimsSubmissions.ToList();
+            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(fundingClaimsSubmissionsUkprns, cancellationToken);
 
-            var expectedUkprns = expectedProvidersList.Select(x => (long)x.Ukprn);
-            var fundingClaimsSubmissionsUkprns = fundingClaimsSubmissionsList.Select(x => x.Ukprn);
-            var ukprns = expectedUkprns.Union(fundingClaimsSubmissionsUkprns);
-
-            IDictionary<int, OrgModel> orgDetails = await _orgProviderService.GetOrgDetailsForUKPRNsAsync(ukprns.Distinct().ToList(), cancellationToken);
-
-            var fundingClaimsSubmissionsModel = _modelBuilder.Build(collection, expectedProvidersList, fundingClaimsSubmissionsList, orgDetails, cancellationToken);
+            var fundingClaimsDataExtractReportModel = _modelBuilder.Build(collection, fundingClaimsDataExtract, orgDetails, cancellationToken);
             var reportFileName = _fileNameService.Generate(reportServiceContext, ReportName, OutputTypes.Excel, true, false, false);
 
-            await GenerateWorkBookAsync(fundingClaimsSubmissionsModel, TemplateName, ReportDataSource, reportServiceContext, reportFileName, cancellationToken);
+            await GenerateWorkBookAsync(fundingClaimsDataExtractReportModel, TemplateName, ReportDataSource, reportServiceContext, reportFileName, cancellationToken);
             return new[] { reportFileName };
         }
 
         private async Task GenerateWorkBookAsync(
-            FundingClaimsSubmissionsModel model,
+            FundingClaimsDataExtractReportModel model,
             string templateFileName,
             string dataSource,
             IOperationsReportServiceContext reportServiceContext,

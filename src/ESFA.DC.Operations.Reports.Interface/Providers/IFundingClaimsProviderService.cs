@@ -11,5 +11,7 @@ namespace ESFA.DC.Operations.Reports.Interface.Providers
         Task<CollectionDetail> GetLatestCollectionDetailAsync(int collectionYear, CancellationToken cancellationToken);
 
         Task<ICollection<FundingClaimsSubmission>> GetAllFundingClaimsSubmissionsByCollectionAsync(int collectionId, CancellationToken cancellationToken);
+
+        Task<ICollection<FundingClaimsDataExtractResultSet>> GetFundingClaimsDataExtractAsync(int collectionId, CancellationToken cancellationToken);
     }
 }

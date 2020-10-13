@@ -100,12 +100,14 @@
   <ItemGroup>
     <Compile Include="AbstractBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reports\FundingClaimsProviderSubmissionReport\Builders\CollectionDetailBuilder.cs" />
+    <Compile Include="Reports\FundingClaimsDataExtractReport\Builders\FundingClaimsDataExtractResultSetBuilder.cs" />
+    <Compile Include="Reports\FundingClaimsDataExtractReport\FundingClaimsDataExtractReportModelBuilderTests.cs" />
+    <Compile Include="Builders\CollectionDetailBuilder.cs" />
     <Compile Include="Reports\FundingClaimsProviderSubmissionReport\Builders\FundingClaimsSubmissionBuilder.cs" />
     <Compile Include="Reports\FundingClaimsProviderSubmissionReport\Builders\FundingClaimSubmissionContractDetailBuilder.cs" />
     <Compile Include="Reports\FundingClaimsProviderSubmissionReport\Builders\FundingClaimSubmissionsValueBuilder.cs" />
     <Compile Include="Reports\FundingClaimsProviderSubmissionReport\Builders\OrganisationCollectionBuilder.cs" />
-    <Compile Include="Reports\FundingClaimsProviderSubmissionReport\Builders\OrgModelBuilder.cs" />
+    <Compile Include="Builders\OrgModelBuilder.cs" />
     <Compile Include="Reports\FundingClaimsProviderSubmissionReport\FundingClaimsProviderSubmissionsReportModelBuilderTests.cs" />
     <Compile Include="Reports\ILRFileSubmissionsPerDayReport\ILRFileSubmissionsPerDayReportModelBuilderTests.cs" />
     <Compile Include="Reports\ILRProvidersReturningFirstTimePerDayReport\ILRProvidersReturningFirstTimePerDayReportModelBuilderTests.cs" />

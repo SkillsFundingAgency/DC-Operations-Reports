@@ -17,5 +17,7 @@ namespace ESFA.DC.Operations.Reports.Model.FundingClaims
         public DateTime SubmissionCloseDateUtc { get; set; }
 
         public string DisplayTitle { get; set; }
+
+        public string CollectionCode { get; set; }
     }
 }

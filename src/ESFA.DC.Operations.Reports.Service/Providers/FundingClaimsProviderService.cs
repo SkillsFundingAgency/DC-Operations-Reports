@@ -9,6 +9,7 @@ using ESFA.DC.FundingClaims.Data;
 using ESFA.DC.Logging.Interfaces;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Interface.Providers;
+using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,32 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
         private readonly Func<IFundingClaimsDataContext> _fundingClaimsContextFactory;
         private readonly IReportServiceConfiguration _reportServiceConfiguration;
         private readonly ILogger _logger;
+
+        private readonly string fundingClaimsDataExtractSql = @"SELECT 
+                                                                    a.SubmissionId,
+	                                                                a.CollectionId,
+                                                                    a.Ukprn,
+   	                                                                ISNULL(a.Declaration, 0) AS Declaration,
+                                                                    ISNULL(a.CovidDeclaration, 0) AS CovidDeclaration,
+                                                                    COALESCE(a.submittedDateTimeUtc,a.CreatedDateTimeUtc) AS UpdatedOn,
+                                                                    sv.Id as SubmissionValueId,
+                                                                    sv.FundingStreamPeriodCode AS SubmissionValueFundingStreamPeriodCode,
+	                                                                sv.DeliverableCodeId,
+                                                                    sv.DeliveryToDate,
+                                                                    sv.ForecastedDelivery,
+	                                                                fspdc.DeliverableCode,
+	                                                                fspdc.Description,
+	                                                                sv.StudentNumbers,
+	                                                                sv.ExceptionalAdjustments,
+                                                                    sv.TotalDelivery,
+                                                                    sv.ContractAllocationNumber,
+                                                                    scd.ContractValue
+                                                                FROM submission a 
+                                                                    LEFT OUTER JOIN submissionvalue sv ON sv.submissionid  = a.SubmissionId
+                                                                    LEFT OUTER JOIN SubmissionContractDetail scd ON scd.SubmissionId = sv.SubmissionId and scd.FundingStreamPeriodCode = sv.FundingStreamPeriodCode
+	                                                                LEFT OUTER JOIN FundingStreamPeriodDeliverableCode fspdc ON sv.DeliverableCodeId = fspdc.Id
+                                                                WHERE CollectionId = @collectionId
+                                                                           AND a.IsSubmitted = 1";
 
         private readonly string fundingClaimsSubmissionsSql = @"SELECT 
                                                                         a.SubmissionId,
@@ -41,7 +68,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                                                                         LEFT OUTER JOIN submissionvalue sv ON sv.submissionid  = a.SubmissionId
                                                                         LEFT OUTER JOIN SubmissionContractDetail scd ON scd.SubmissionId = a.SubmissionId
                                                                     WHERE CollectionId = @collectionId
-                                                                                AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId )";
+                                                                                AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId AND b.IsSubmitted = 1)";
 
         public FundingClaimsProviderService(
             Func<IFundingClaimsDataContext> fundingClaimsContextFactory,
@@ -68,7 +95,8 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                             CollectionId = x.CollectionId,
                             CollectionName = x.CollectionName,
                             DisplayTitle = x.DisplayTitle,
-                            SubmissionCloseDateUtc = x.SubmissionCloseDateUtc
+                            SubmissionCloseDateUtc = x.SubmissionCloseDateUtc,
+                            CollectionCode = x.CollectionCode
                         })
                         .FirstOrDefaultAsync(cancellationToken);
                 }
@@ -140,6 +168,29 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
             _logger.LogInfo($"return submissions for collectionId : {collectionId}");
 
             return model;
+        }
+
+        public async Task<ICollection<FundingClaimsDataExtractResultSet>> GetFundingClaimsDataExtractAsync(int collectionId, CancellationToken cancellationToken)
+        {
+            IEnumerable<FundingClaimsDataExtractResultSet> fundingClaimsDataExtractResultSets;
+            try
+            {
+                using (var connection = new SqlConnection(_reportServiceConfiguration.FundingClaimsConnectionString))
+                {
+                    await connection.OpenAsync();
+
+                    fundingClaimsDataExtractResultSets = await connection.QueryAsync<FundingClaimsDataExtractResultSet>(fundingClaimsDataExtractSql, new { collectionId });
+
+                    _logger.LogInfo($"return funding claims data Extract for collectionId : {collectionId}");
+
+                    return fundingClaimsDataExtractResultSets.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"error getting funding claims data Extract for collectionId : {collectionId}", e);
+                throw;
+            }
         }
     }
 }
