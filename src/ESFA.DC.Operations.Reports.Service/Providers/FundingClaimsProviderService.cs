@@ -180,6 +180,10 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                     await connection.OpenAsync();
 
                     fundingClaimsDataExtractResultSets = await connection.QueryAsync<FundingClaimsDataExtractResultSet>(fundingClaimsDataExtractSql, new { collectionId });
+
+                    _logger.LogInfo($"return funding claims data Extract for collectionId : {collectionId}");
+
+                    return fundingClaimsDataExtractResultSets.ToList();
                 }
             }
             catch (Exception e)
@@ -187,10 +191,6 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                 _logger.LogError($"error getting funding claims data Extract for collectionId : {collectionId}", e);
                 throw;
             }
-
-            _logger.LogInfo($"return funding claims data Extract for collectionId : {collectionId}");
-
-            return fundingClaimsDataExtractResultSets.ToList();
         }
     }
 }
