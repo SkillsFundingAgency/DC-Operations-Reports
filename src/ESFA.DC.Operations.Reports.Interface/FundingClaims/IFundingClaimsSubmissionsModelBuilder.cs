@@ -22,5 +22,7 @@ namespace ESFA.DC.Operations.Reports.Interface.FundingClaims
         string IsExpectedToReturn(long ukprn, ICollection<OrganisationCollection> expectedProviders);
 
         string BuildCovidResponse(bool? covidDeclaration);
+
+        string BuildSignedResponse(bool isSigned, bool isSubmitted);
     }
 }

@@ -60,7 +60,8 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                     ExpectedToReturnInCurrentPeriod = IsExpectedToReturn(submission.Ukprn, expectedProviders),
                     ReturnedInCurrentPeriod = submission.IsSubmitted ? "Yes" : "No",
                     DateLatestClaimSubmitted = submission.SubmittedDateTimeUtc?.LongDateStringFormat(),
-                    CovidResponse = BuildCovidResponse(submission.CovidDeclaration)
+                    CovidResponse = BuildCovidResponse(submission.CovidDeclaration),
+                    Signed = BuildSignedResponse(submission.IsSigned, submission.IsSubmitted)
                 };
 
                 detail.ALLBC1920ContractValue = GetContractValue(submission.SubmissionId, FundingStreamPeriodCodeConstants.ALLBC1920, submission.SubmissionContractDetails);
@@ -100,6 +101,16 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
 
             model.FundingClaimsSubmissionsDetails = submissionsDetails.OrderBy(x => x.ProviderName).ToList();
             return model;
+        }
+
+        public string BuildSignedResponse(bool isSigned, bool isSubmitted)
+        {
+            if (isSubmitted)
+            {
+                return isSigned ? "Yes" : "No";
+            }
+
+            return string.Empty;
         }
 
         public string BuildCovidResponse(bool? covidDeclaration)

@@ -13,6 +13,8 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
         public Guid SubmissionId = new Guid("08BD2CBD-FB97-447D-860A-FEAB8D03A5EA");
 
         public const bool IsSubmitted = true;
+        
+        public const bool IsSigned = true;
 
         public const int CollectionId = 174;
 
@@ -27,6 +29,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
                 IsSubmitted = IsSubmitted,
                 CollectionId = CollectionId,
                 Ukprn = Ukprn,
+                IsSigned = IsSigned,
                 SubmissionValues = new List<FundingClaimSubmissionsValue>
                 {
                     new FundingClaimSubmissionsValueBuilder().With(x => x.FundingStreamPeriodCode, FundingStreamPeriodCodeConstants.ALLBC1920).With(x => x.TotalDelivery, 10).With(x => x.SubmissionId, submissionId).Build(),
