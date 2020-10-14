@@ -39,6 +39,8 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
 
         public const decimal ContractValue = 1000;
 
+        public const byte IsSigned  = 1;
+
         public FundingClaimsDataExtractResultSetBuilder()
         {
             modelObject = new FundingClaimsDataExtractResultSet()
@@ -59,7 +61,8 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
                 ExceptionalAdjustments = ExceptionalAdjustments,
                 TotalDelivery = TotalDelivery,
                 ContractAllocationNumber = ContractAllocationNumber,
-                ContractValue = ContractValue
+                ContractValue = ContractValue,
+                Signed = IsSigned,
             };
         }
     }
