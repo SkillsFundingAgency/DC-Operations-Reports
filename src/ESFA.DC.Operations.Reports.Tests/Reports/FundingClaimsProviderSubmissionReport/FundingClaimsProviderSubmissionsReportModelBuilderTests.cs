@@ -71,6 +71,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
             result.NoOfProvidersExpectedToReturn.Should().Be(4);
             result.NoOfReturningExpectedProviders.Should().Be(2);
             result.NoOfReturningUnexpectedProviders.Should().Be(0);
+            result.TotalNoOfReturningProviders.Should().Be(2);
             result.ReportRun.Should().Be("01/01/2020 01:01:01");
 
             result.FundingClaimsSubmissionsDetails[0].ProviderName.Should().Be("Provider1");

@@ -37,13 +37,12 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
             var expectedProvidersNotSubmitted = expectedProviders.Where(x => !submittedProviderUkprns.Contains(x.Ukprn)).ToList();
             var expectedProvidersSubmitted = expectedProviders.Where(x => submittedProviderUkprns.Contains(x.Ukprn)).ToList();
             var unexpectedReturningProviders = submittedProviderUkprns.Where(x => !expectedUkprns.Contains(x)).ToList();
-            var totalProviders = expectedUkprns.Union(submittedProviderUkprns).Count();
 
             var model = new FundingClaimsSubmissionsModel
             {
                 FundingClaim = collectionDetail.DisplayTitle,
                 ReportRun = _dateTimeProvider.ConvertUtcToUk(_dateTimeProvider.GetNowUtc()).LongDateStringFormat(),
-                TotalNoOfProviders = totalProviders,
+                TotalNoOfReturningProviders = submittedProviderUkprns.Count,
                 NoOfProvidersExpectedToReturn = expectedUkprns.Count,
                 NoOfReturningExpectedProviders = expectedProvidersSubmitted.Count,
                 NoOfExpectedProvidersNotReturning = expectedProvidersNotSubmitted.Count,
