@@ -41,7 +41,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
                 org1, org2, org3, org4
             };
 
-            var fundingClaimSubmission1 = new FundingClaimsSubmissionBuilder().With(x => x.Ukprn, 12345678).Build();
+            var fundingClaimSubmission1 = new FundingClaimsSubmissionBuilder().With(x => x.Ukprn, 12345678).With(x => x.IsSigned, false).Build();
             var fundingClaimSubmission2 = new FundingClaimsSubmissionBuilder(new Guid("18BD2CBD-FB97-447D-860A-FEAB8D03A5EA")).With(x => x.Ukprn, 87654321).Build();
 
             var fundingClaimsSubmissions = new List<FundingClaimsSubmission>()
@@ -71,10 +71,12 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
             result.NoOfProvidersExpectedToReturn.Should().Be(4);
             result.NoOfReturningExpectedProviders.Should().Be(2);
             result.NoOfReturningUnexpectedProviders.Should().Be(0);
+            result.TotalNoOfReturningProviders.Should().Be(2);
             result.ReportRun.Should().Be("01/01/2020 01:01:01");
 
             result.FundingClaimsSubmissionsDetails[0].ProviderName.Should().Be("Provider1");
             result.FundingClaimsSubmissionsDetails[0].ExpectedToReturnInCurrentPeriod.Should().Be("Yes");
+            result.FundingClaimsSubmissionsDetails[0].Signed.Should().Be("No");
             result.FundingClaimsSubmissionsDetails[0].AEB19TRLS1920ProcuredClaimed.Should().Be(50);
             result.FundingClaimsSubmissionsDetails[0].AEB19TRLS1920ProcuredContractValue.Should().Be(51);
             result.FundingClaimsSubmissionsDetails[0].AEBASLS1920ProcuredClaimed.Should().Be(40);
@@ -89,6 +91,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
             result.FundingClaimsSubmissionsDetails[0].ED1920ContractValue1619.Should().Be(61);
 
             result.FundingClaimsSubmissionsDetails[1].ProviderName.Should().Be("Provider2");
+            result.FundingClaimsSubmissionsDetails[1].Signed.Should().Be("Yes");
             result.FundingClaimsSubmissionsDetails[1].AEB19TRLS1920ProcuredClaimed.Should().Be(50);
             result.FundingClaimsSubmissionsDetails[1].AEB19TRLS1920ProcuredContractValue.Should().Be(51);
             result.FundingClaimsSubmissionsDetails[1].AEBASLS1920ProcuredClaimed.Should().Be(40);
@@ -173,13 +176,23 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissi
         }
 
 
-         [Theory]
-         [InlineData(null, "N/A")]
-         [InlineData(true, "Yes")]
-         [InlineData(false, "No")]
+        [Theory]
+        [InlineData(null, "N/A")]
+        [InlineData(true, "Yes")]
+        [InlineData(false, "No")]
         public void BuildCovidResponse_Returns_ExpectedValue(bool? covidDeclaration, string expectedValue)
         {
             NewBuilder().BuildCovidResponse(covidDeclaration).Should().Be(expectedValue);
+        }
+
+        [Theory]
+        [InlineData(true, true, "Yes")]
+        [InlineData(true, false, "")]
+        [InlineData(false, true, "No")]
+        [InlineData(false, false, "")]
+        public void BuildSignedResponse_Returns_ExpectedValue(bool isSigned, bool isSubmitted, string expectedValue)
+        {
+            NewBuilder().BuildSignedResponse(isSigned, isSubmitted).Should().Be(expectedValue);
         }
 
         private FundingClaimsProviderSubmissions1920ReportModelBuilder NewBuilder(

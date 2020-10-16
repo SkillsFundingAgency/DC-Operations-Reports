@@ -8,7 +8,7 @@ namespace ESFA.DC.Operations.Reports.Model
 
         public string ReportRun { get; set; }
 
-        public int TotalNoOfProviders { get; set; }
+        public int TotalNoOfReturningProviders { get; set; }
 
         public int NoOfProvidersExpectedToReturn { get; set; }
 
