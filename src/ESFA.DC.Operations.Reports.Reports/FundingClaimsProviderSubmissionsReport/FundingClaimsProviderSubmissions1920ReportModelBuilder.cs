@@ -37,13 +37,12 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
             var expectedProvidersNotSubmitted = expectedProviders.Where(x => !submittedProviderUkprns.Contains(x.Ukprn)).ToList();
             var expectedProvidersSubmitted = expectedProviders.Where(x => submittedProviderUkprns.Contains(x.Ukprn)).ToList();
             var unexpectedReturningProviders = submittedProviderUkprns.Where(x => !expectedUkprns.Contains(x)).ToList();
-            var totalProviders = expectedUkprns.Union(submittedProviderUkprns).Count();
 
             var model = new FundingClaimsSubmissionsModel
             {
                 FundingClaim = collectionDetail.DisplayTitle,
                 ReportRun = _dateTimeProvider.ConvertUtcToUk(_dateTimeProvider.GetNowUtc()).LongDateStringFormat(),
-                TotalNoOfProviders = totalProviders,
+                TotalNoOfReturningProviders = submittedProviderUkprns.Count,
                 NoOfProvidersExpectedToReturn = expectedUkprns.Count,
                 NoOfReturningExpectedProviders = expectedProvidersSubmitted.Count,
                 NoOfExpectedProvidersNotReturning = expectedProvidersNotSubmitted.Count,
@@ -60,7 +59,8 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                     ExpectedToReturnInCurrentPeriod = IsExpectedToReturn(submission.Ukprn, expectedProviders),
                     ReturnedInCurrentPeriod = submission.IsSubmitted ? "Yes" : "No",
                     DateLatestClaimSubmitted = submission.SubmittedDateTimeUtc?.LongDateStringFormat(),
-                    CovidResponse = BuildCovidResponse(submission.CovidDeclaration)
+                    CovidResponse = BuildCovidResponse(submission.CovidDeclaration),
+                    Signed = BuildSignedResponse(submission.IsSigned, submission.IsSubmitted)
                 };
 
                 detail.ALLBC1920ContractValue = GetContractValue(submission.SubmissionId, FundingStreamPeriodCodeConstants.ALLBC1920, submission.SubmissionContractDetails);
@@ -100,6 +100,16 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
 
             model.FundingClaimsSubmissionsDetails = submissionsDetails.OrderBy(x => x.ProviderName).ToList();
             return model;
+        }
+
+        public string BuildSignedResponse(bool isSigned, bool isSubmitted)
+        {
+            if (isSubmitted)
+            {
+                return isSigned ? "Yes" : "No";
+            }
+
+            return string.Empty;
         }
 
         public string BuildCovidResponse(bool? covidDeclaration)

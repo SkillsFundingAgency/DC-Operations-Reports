@@ -55,6 +55,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                                                                         a.Version,
                                                                         a.CollectionId,
                                                                         a.IsSubmitted,
+                                                                        a.IsSigned,
                                                                         a.CovidDeclaration,
                                                                         sv.Id as SubmissionValueId,
                                                                         sv.SubmissionId AS SubmissionValueSubmissionId,
@@ -122,7 +123,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                 }
 
                 var fundingClaimsSubmissions = result
-                    .GroupBy(r => new { r.Version, r.SubmissionId, r.Ukprn, r.CollectionId, r.IsSubmitted, r.SubmittedDateTimeUtc, r.CovidDeclaration })
+                    .GroupBy(r => new { r.Version, r.SubmissionId, r.Ukprn, r.CollectionId, r.IsSubmitted, r.IsSigned, r.SubmittedDateTimeUtc, r.CovidDeclaration })
                     .Select(x => new FundingClaimsSubmission()
                     {
                         Version = x.Key.Version,
@@ -130,6 +131,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                         Ukprn = x.Key.Ukprn,
                         CollectionId = x.Key.CollectionId,
                         IsSubmitted = x.Key.IsSubmitted,
+                        IsSigned = x.Key.IsSigned,
                         SubmittedDateTimeUtc = x.Key.SubmittedDateTimeUtc,
                         CovidDeclaration = x.Key.CovidDeclaration
                     }).Distinct().ToList();
