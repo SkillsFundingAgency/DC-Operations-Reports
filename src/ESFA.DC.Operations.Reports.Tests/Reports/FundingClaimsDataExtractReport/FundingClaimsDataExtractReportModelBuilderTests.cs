@@ -5,7 +5,7 @@ using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
-using ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport;
+using ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport;
 using ESFA.DC.Operations.Reports.Tests.Builders;
 using ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissionReport.Builders;
 using FluentAssertions;
@@ -40,7 +40,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsDataExtractRepor
                 org1, org2, org3, org4,
             };
 
-            var fundingClaimsDataExtractResultSet1 = new FundingClaimsDataExtractResultSetBuilder().With(x => x.Ukprn, 12345678).Build();
+            var fundingClaimsDataExtractResultSet1 = new FundingClaimsDataExtractResultSetBuilder().With(x => x.Ukprn, 12345678).With<byte>(x => x.Signed, 1).Build();
             var fundingClaimsDataExtractResultSet2 = new FundingClaimsDataExtractResultSetBuilder()
                                                                                                     .With(x => x.Ukprn, 87654321)
                                                                                                     .With(x => x.DeliverableCode, 1002)

@@ -7,7 +7,7 @@ using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
 using ESFA.DC.Operations.Reports.Reports.Extensions;
 
-namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport
+namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport
 {
     public class FundingClaimsDataExtract1920ReportModelBuilder : IFundingClaimsDataExtractModelBuilder
     {
