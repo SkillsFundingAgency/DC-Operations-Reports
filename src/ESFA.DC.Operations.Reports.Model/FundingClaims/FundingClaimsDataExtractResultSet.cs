@@ -16,6 +16,8 @@ namespace ESFA.DC.Operations.Reports.Model.FundingClaims
 
         public byte CovidDeclaration { get; set; }
 
+        public byte Signed { get; set; }
+
         public DateTime? UpdatedOn { get; set; }
 
         public int SubmissionValueId { get; set; }

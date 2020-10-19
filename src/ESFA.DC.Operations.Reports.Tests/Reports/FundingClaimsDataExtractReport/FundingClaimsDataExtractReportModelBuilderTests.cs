@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.Operations.Reports.Interface;
 using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
-using ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport;
+using ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport;
 using ESFA.DC.Operations.Reports.Tests.Builders;
 using ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsProviderSubmissionReport.Builders;
 using FluentAssertions;
@@ -40,10 +37,10 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsDataExtractRepor
 
             var expectedProviders = new List<OrganisationCollection>()
             {
-                org1, org2, org3, org4
+                org1, org2, org3, org4,
             };
 
-            var fundingClaimsDataExtractResultSet1 = new FundingClaimsDataExtractResultSetBuilder().With(x => x.Ukprn, 12345678).Build();
+            var fundingClaimsDataExtractResultSet1 = new FundingClaimsDataExtractResultSetBuilder().With(x => x.Ukprn, 12345678).With<byte>(x => x.Signed, 1).Build();
             var fundingClaimsDataExtractResultSet2 = new FundingClaimsDataExtractResultSetBuilder()
                                                                                                     .With(x => x.Ukprn, 87654321)
                                                                                                     .With(x => x.DeliverableCode, 1002)
@@ -51,21 +48,22 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsDataExtractRepor
                                                                                                     .With(x => x.StudentNumbers, 21)
                                                                                                     .With(x => x.SubmissionValueFundingStreamPeriodCode, "AEBC-19TRN1920")
                                                                                                     .With(x => x.ContractAllocationNumber, "16ED - 1167")
+                                                                                                    .With<byte>(x => x.Signed, 0)
                                                                                                     .With(x => x.TotalDelivery, 10000).Build();
 
             var fundingClaimsDataExtractResultSets = new List<FundingClaimsDataExtractResultSet>()
             {
                 fundingClaimsDataExtractResultSet1,
-                fundingClaimsDataExtractResultSet2
+                fundingClaimsDataExtractResultSet2,
             };
 
             var orgModel1 = new OrgModelBuilder().With(x => x.Ukprn, 12345678).With(x => x.Name, "Provider1").Build();
             var orgModel2 = new OrgModelBuilder().With(x => x.Ukprn, 87654321).With(x => x.Name, "Provider2").Build();
-            
+
             var orgDetails = new Dictionary<int, OrgModel>()
             {
                 {12345678, orgModel1 },
-                {87654321, orgModel2 }
+                {87654321, orgModel2 },
             };
 
             var result = NewBuilder(dateTimeProviderMock.Object).Build(collectionDetail, fundingClaimsDataExtractResultSets, orgDetails, CancellationToken.None);
@@ -85,6 +83,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsDataExtractRepor
             result.FundingClaimsDataExtract[0].TotalDelivery.Should().Be(1500M);
             result.FundingClaimsDataExtract[0].ContractAllocationNumber.Should().Be("ALLC-4391");
             result.FundingClaimsDataExtract[0].MaximumContractValue.Should().Be(1000);
+            result.FundingClaimsDataExtract[0].Signed.Should().Be(1);
 
 
             result.FundingClaimsDataExtract[1].Ukprn.Should().Be(87654321);
@@ -97,6 +96,7 @@ namespace ESFA.DC.Operations.Reports.Tests.Reports.FundingClaimsDataExtractRepor
             result.FundingClaimsDataExtract[1].StudentNumbers.Should().Be(21);
             result.FundingClaimsDataExtract[1].TotalDelivery.Should().Be(10000);
             result.FundingClaimsDataExtract[1].ContractAllocationNumber.Should().Be("16ED - 1167");
+            result.FundingClaimsDataExtract[1].Signed.Should().Be(0);
         }
 
         private FundingClaimsDataExtract1920ReportModelBuilder NewBuilder(

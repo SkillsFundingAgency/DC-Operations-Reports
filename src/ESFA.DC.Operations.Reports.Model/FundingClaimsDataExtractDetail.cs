@@ -20,6 +20,8 @@ namespace ESFA.DC.Operations.Reports.Model
 
         public byte CovidDeclaration { get; set; }
 
+        public byte Signed { get; set; }
+
         public string FundingStreamPeriodCode { get; set; }
 
         public decimal MaximumContractValue { get; set; }

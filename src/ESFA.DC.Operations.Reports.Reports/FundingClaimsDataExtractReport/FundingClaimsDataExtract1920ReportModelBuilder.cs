@@ -7,7 +7,7 @@ using ESFA.DC.Operations.Reports.Model;
 using ESFA.DC.Operations.Reports.Model.FundingClaims;
 using ESFA.DC.Operations.Reports.Reports.Extensions;
 
-namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsReport
+namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsDataExtractReport
 {
     public class FundingClaimsDataExtract1920ReportModelBuilder : IFundingClaimsDataExtractModelBuilder
     {
@@ -44,7 +44,8 @@ namespace ESFA.DC.Operations.Reports.Reports.FundingClaimsProviderSubmissionsRep
                         ForecastedDelivery = fundingClaim.ForecastedDelivery,
                         ExceptionalAdjustments = fundingClaim.ExceptionalAdjustments,
                         TotalDelivery = fundingClaim.TotalDelivery,
-                        ContractAllocationNumber = fundingClaim.ContractAllocationNumber
+                        ContractAllocationNumber = fundingClaim.ContractAllocationNumber,
+                        Signed = fundingClaim.Signed
                     })
                 .OrderBy(x => x.ProviderName)
                 .ThenBy(x => x.CollectionPeriod)
