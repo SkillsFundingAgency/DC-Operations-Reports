@@ -26,7 +26,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
 	                                                                a.CollectionId,
                                                                     a.Ukprn,
    	                                                                ISNULL(a.Declaration, 0) AS Declaration,
-                                                                    ISNULL(a.CovidDeclaration, 0) AS CovidDeclaration,
+                                                                    a.CovidDeclaration AS CovidDeclaration,
                                                                     a.IsSigned AS Signed,
                                                                     COALESCE(a.submittedDateTimeUtc,a.CreatedDateTimeUtc) AS UpdatedOn,
                                                                     sv.Id as SubmissionValueId,

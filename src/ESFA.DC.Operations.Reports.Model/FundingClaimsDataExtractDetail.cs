@@ -18,7 +18,7 @@ namespace ESFA.DC.Operations.Reports.Model
 
         public byte Declaration { get; set; }
 
-        public byte CovidDeclaration { get; set; }
+        public byte? CovidDeclaration { get; set; }
 
         public byte Signed { get; set; }
 
