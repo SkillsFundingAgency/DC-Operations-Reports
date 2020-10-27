@@ -46,7 +46,7 @@ namespace ESFA.DC.Operations.Reports.Service.Providers
                                                                     LEFT OUTER JOIN SubmissionContractDetail scd ON scd.SubmissionId = sv.SubmissionId and scd.FundingStreamPeriodCode = sv.FundingStreamPeriodCode
 	                                                                LEFT OUTER JOIN FundingStreamPeriodDeliverableCode fspdc ON sv.DeliverableCodeId = fspdc.Id
                                                                 WHERE CollectionId = @collectionId
-                                                                           AND a.IsSubmitted = 1";
+                                                                           AND a.version = (SELECT MAX(b.version) FROM Submission b WHERE a.UKPRN = b.UKPRN AND collectionId = @collectionId AND b.IsSubmitted = 1)";
 
         private readonly string fundingClaimsSubmissionsSql = @"SELECT 
                                                                         a.SubmissionId,
