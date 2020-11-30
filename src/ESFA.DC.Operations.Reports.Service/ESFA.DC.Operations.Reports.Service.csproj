@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <CodeAnalysisRuleSet>..\ESFA.DC.Operations.Reports.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Dapper" Version="1.60.9" />
+    <PackageReference Include="ESFA.DC.CollectionsManagement.Models" Version="0.2.45-beta0001" />
+    <PackageReference Include="ESFA.DC.DateTimeProvider" Version="0.1.6-beta0001" />
+    <PackageReference Include="ESFA.DC.FileService" Version="0.1.40-beta0001" />
+    <PackageReference Include="ESFA.DC.FundingClaims.Data" Version="0.4.5-beta.1" />
+    <PackageReference Include="ESFA.DC.ILR.2021.Database.EF" Version="0.1.154" />
+    <PackageReference Include="ESFA.DC.ILR1819.Database.EF" Version="0.1.381" />
+    <PackageReference Include="ESFA.DC.ILR1920.Database.EF" Version="0.0.551" />
+    <PackageReference Include="ESFA.DC.Logging" Version="0.1.4-beta0001" />
+    <PackageReference Include="ESFA.DC.Logging.Interfaces" Version="0.1.4-beta0001" />
+    <PackageReference Include="ESFA.DC.PIMS.EF" Version="0.2.1-beta0001" />
+    <PackageReference Include="ESFA.DC.Serialization.Json" Version="0.1.6-beta0001" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ESFA.DC.Operations.Reports.Interface\ESFA.DC.Operations.Reports.Interface.csproj" />
+    <ProjectReference Include="..\ESFA.DC.Operations.Reports.Model\ESFA.DC.Operations.Reports.Model.csproj" />
+  </ItemGroup>
+
+</Project>
